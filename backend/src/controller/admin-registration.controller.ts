@@ -95,7 +95,8 @@ router.put('/admin/registrations/:id', authFilter, async (req: Request, res: Res
             await registrationService.unregister(registration.did);
         }
 
-        queryRunner.commitTransaction();
+        await queryRunner.commitTransaction();
+        logger.info(`Registration ${id} status updated to ${status} by admin.`);
         res.status(200).json(registration);
         // TODO should send email first?
         const data = {
