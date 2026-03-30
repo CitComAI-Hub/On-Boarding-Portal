@@ -31,7 +31,7 @@ appServer.use(cookieParser())
 appServer.use(forwardedMiddleware);
 
 // Health check route
-appServer.get('/health/live', (req, res) => {
+appServer.get('/health/live', (_, res) => {
   res.status(200).json({
     status: 'ALIVE',
     timestamp: new Date().toISOString()
@@ -39,7 +39,7 @@ appServer.get('/health/live', (req, res) => {
 });
 
 
-appServer.get('/health/ready', async (req, res) => {
+appServer.get('/health/ready', async (_, res) => {
   try {
     const isDatabaseReady = (await initializeDatabase()).isInitialized;
     if (isDatabaseReady) {
@@ -57,19 +57,16 @@ appServer.get('/health/ready', async (req, res) => {
 // login
 appServer.use('/api', oidcController, registrationController, adminRegistrationController)
 
+let renderedIndex: string;
 appServer.use((_req, res) => {
-  ejs.renderFile(indexPath, { documentToSignUrl: app.documentToSignUrl }, (err, str) => {
-    if (err) {
-      logger.error(err);
-      return res.status(500).send('Error rendering template');
-    }
-    res.send(str);
-  })
+  res.set('Cache-Control', 'no-cache');
+  res.send(renderedIndex);
 });
 
 
 (async () => {
   try {
+    renderedIndex = await ejs.renderFile(indexPath, { documentToSignUrl: app.documentToSignUrl });
     await initializeDatabase()
   } catch (error) {
     logger.error('Error connecting to the database', error);
