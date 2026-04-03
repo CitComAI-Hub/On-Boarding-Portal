@@ -5,11 +5,11 @@
 
         <mat-tab>
             <ng-template mat-tab-label>
-                <span>SUMMARY</span>
+                <span>RESUMEN</span>
             </ng-template>
             <div class="grid-layout">
                 <mat-form-field appearance="outline" class="span-9">
-                    <mat-label>Registration ID</mat-label>
+                    <mat-label>ID de solicitud</mat-label>
                     <input matInput formControlName="id">
                     <mat-icon matSuffix>fingerprint</mat-icon>
                 </mat-form-field>
@@ -30,20 +30,20 @@
 
 
                 <mat-form-field appearance="outline" class="span-6">
-                    <mat-label>Administrative Email</mat-label>
+                    <mat-label>Email administrativo</mat-label>
                     <input matInput formControlName="email">
                     <mat-icon matSuffix>email</mat-icon>
                 </mat-form-field>
 
                 @if(!_editting()) {
                 <mat-form-field appearance="outline">
-                    <mat-label>Submission Date</mat-label>
+                    <mat-label>Fecha de envio</mat-label>
                     <input matInput [value]="registration().createdAt | date:'dd/MM/yyyy HH:mm:ss'" disabled>
                     <mat-icon matSuffix>calendar_today</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                    <mat-label>Last Update</mat-label>
+                    <mat-label>Ultima actualizacion</mat-label>
                     <input matInput [value]="registration().updatedAt | date:'dd/MM/yyyy HH:mm:ss'" disabled>
                     <mat-icon matSuffix>update</mat-icon>
                 </mat-form-field>
@@ -51,14 +51,14 @@
 
                 @if(!_editting() || registrationForm.get('files')?.value?.length > 0) {
                 <div class="span-12 files-container">
-                    <mat-label class="section-label">Attached Documents</mat-label>
+                    <mat-label class="section-label">Documentos adjuntos</mat-label>
                     <mat-chip-set class="chip-list">
                         @for(file of registrationForm.get('files')?.value; track file.name) {
                         <mat-chip-row class="file-chip" [disabled]="!editable()">
                             <mat-icon matChipAvatar>picture_as_pdf</mat-icon>
                             <span class="truncate">{{ file.name }}</span>
                             @if(_editting()) {
-                            <button matChipRemove matTooltip="Click to remove" [matTooltipShowDelay]="500"
+                            <button matChipRemove matTooltip="Eliminar" [matTooltipShowDelay]="500"
                                 (click)="removeFile($index)">
                                 <mat-icon>cancel</mat-icon>
                             </button>
@@ -68,20 +68,20 @@
                     </mat-chip-set>
                 </div>
                 } @else {
-                <app-upload-file label="Signed Acceptance Agreement" accept="application/pdf" [maxFileSizeMB]="5"
+                <app-upload-file label="Acuerdo de aceptacion firmado" accept="application/pdf" [maxFileSizeMB]="5"
                     [multiple]="false" (filesChanged)="onFileSelected($event)" class="span-12" />
                 }
                 @if(needRevision()) {
                 <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>{{ 'Registration needs review. Please update the information to resolve the indicated
-                        issue.'
+                    <mat-label>{{ 'La solicitud requiere revision. Actualiza la informacion para resolver la
+                        incidencia.'
                         }}</mat-label>
                     <textarea matInput formControlName="reason" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
                         cdkAutosizeMinRows="3" cdkAutosizeMaxRows="5"></textarea>
                     <mat-icon matSuffix>comment</mat-icon>
                     @if (registrationForm.get('reason')?.hasError('required')) {
                     <mat-error>
-                        A reason is <strong>required</strong> when the status needs review.
+                        El motivo es <strong>obligatorio</strong> cuando el estado requiere revision.
                     </mat-error>
                     }
                 </mat-form-field>
@@ -90,39 +90,39 @@
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <span>COMPANY INFORMATION</span>
+                <span>DATOS DE EMPRESA</span>
             </ng-template>
             <div class="grid-layout">
                 <mat-form-field appearance="outline" class="span-8">
-                    <mat-label>Official Registered Name</mat-label>
+                    <mat-label>Razon social</mat-label>
                     <input matInput formControlName="name">
                     <mat-icon matSuffix>corporate_fare</mat-icon>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>Tax Identifier (VAT/CIF)</mat-label>
+                    <mat-label>Identificador fiscal (VAT/CIF)</mat-label>
                     <input matInput formControlName="taxId">
                     <mat-icon matSuffix>badge</mat-icon>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>Full Address</mat-label>
+                    <mat-label>Direccion completa</mat-label>
                     <input matInput formControlName="address">
                     <mat-icon matSuffix>place</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>City</mat-label>
+                    <mat-label>Ciudad</mat-label>
                     <input matInput formControlName="city">
                     <mat-icon matSuffix>location_city</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>Country</mat-label>
+                    <mat-label>Pais</mat-label>
                     <input matInput formControlName="country">
                     <mat-icon matSuffix>public</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>Postal Code</mat-label>
+                    <mat-label>Codigo postal</mat-label>
                     <input matInput formControlName="postCode">
                     <mat-icon matSuffix>local_post_office</mat-icon>
                 </mat-form-field>
@@ -136,16 +136,16 @@
         @if(!_editting()) {
         <button type="button" matButton="filled" color="accent" (click)="enableReview()">
             <mat-icon>edit_note</mat-icon>
-            Review
+            Revisar
         </button>
         } @else {
         <button type="submit" matButton="filled" color="primary"
             [disabled]="registrationForm.invalid || !registrationForm.dirty">
             <mat-icon>save</mat-icon>
-            Save
+            Guardar
         </button>
         <button type="button" matButton="tonal" color="" (click)="cancelReview()">
-            Cancel
+            Cancelar
         </button>
         }
     </div>

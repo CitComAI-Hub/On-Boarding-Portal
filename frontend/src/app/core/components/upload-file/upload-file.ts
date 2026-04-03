@@ -14,7 +14,7 @@ import { NotificationService } from '../../services/notification';
   styleUrl: './upload-file.scss',
 })
 export class UploadFile {
-  @Input() label: string = 'Select Documents';
+  @Input() label: string = 'Seleccionar documentos';
   @Input() accept: string = 'application/pdf';
   @Input() multiple: boolean = true;
   @Input() maxFileSizeMB: number = 5;
@@ -35,8 +35,8 @@ export class UploadFile {
       const isValidType = this.accept.includes(file.type) || this.accept.includes(file.name.split('.').pop() || '');
       const isValidSize = file.size <= this.maxFileSizeMB * 1024 * 1024;
 
-      if (!isValidType) this.notification.error(`File ${file.name} is not a valid type.`);
-      if (!isValidSize) this.notification.error(`File ${file.name} exceeds ${this.maxFileSizeMB}MB.`);
+      if (!isValidType) this.notification.error(`El archivo ${file.name} no tiene un tipo valido.`);
+      if (!isValidSize) this.notification.error(`El archivo ${file.name} supera ${this.maxFileSizeMB}MB.`);
 
       return isValidType && isValidSize;
     });
@@ -62,7 +62,7 @@ export class UploadFile {
     const newWindow = window.open(blobUrl, '_blank');
 
     if (!newWindow) {
-      this.notification.info('Please allow pop-ups to preview the PDF');
+      this.notification.info('Permite las ventanas emergentes para previsualizar el PDF');
     }
   }
 

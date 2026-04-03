@@ -1,14 +1,14 @@
 <div class="modal-header">
     <div class="header-title-group">
-        <h2 mat-dialog-title>{{ data.title || 'PDF Preview' }}</h2>
+        <h2 mat-dialog-title>{{ data.title || 'Vista previa PDF' }}</h2>
 
-        <button mat-icon-button type="button" (click)="openInNewTab()" matTooltip="Open in new tab"
-            aria-label="Open PDF in new tab">
+        <button mat-icon-button type="button" (click)="openInNewTab()" matTooltip="Abrir en nueva pestana"
+            aria-label="Abrir PDF en nueva pestana">
             <mat-icon>open_in_new</mat-icon>
         </button>
     </div>
 
-    <button mat-icon-button (click)="close()" aria-label="Close dialog">
+    <button mat-icon-button (click)="close()" aria-label="Cerrar dialogo">
         <mat-icon>close</mat-icon>
     </button>
 </div>
@@ -18,7 +18,7 @@
     } @else {
     <div class="error-container">
         <mat-icon color="warn">error_outline</mat-icon>
-        <p>The PDF file could not be loaded or is invalid.</p>
+        <p>No se pudo cargar el PDF o es invalido.</p>
     </div>
     }
 </mat-dialog-content>

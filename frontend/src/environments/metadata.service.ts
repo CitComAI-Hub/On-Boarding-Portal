@@ -4,8 +4,6 @@ export function getMetadata<T = string>(name: string, defaultValue: T | null = n
   if (metaElem) {
     const content = metaElem.getAttribute('content');
 
-    metaElem.remove();
-
     if (content && content?.length > 0 && !content.includes('<%')) {
       return content as T;
     }

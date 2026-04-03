@@ -2,16 +2,17 @@
   max-width: var(--app-container-width);
   margin: 0 auto;
   width: 100%;
-  padding: 0 24px;
+  padding: 0 20px;
 }
 
 .hero-bg {
-  padding: 80px 0;
+  padding: 52px 0 28px;
 }
 
 .main-card {
-  padding: 40px;
+  padding: 36px;
   overflow: hidden;
+  border-top: 6px solid var(--app-primary);
 
   .hero-layout {
     text-align: center;
@@ -19,36 +20,49 @@
     flex-direction: column;
     align-items: center;
   }
+
+  .eyebrow {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--app-primary);
+    text-transform: uppercase;
+  }
+
   .title {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 4.4vw, 3.6rem);
     font-weight: 800;
-    line-height: 1.1;
-    margin: 24px 0;
-    color: var(--mat-sys-on-primary-fixed);
+    line-height: 1.05;
+    margin: 18px 0;
+    color: var(--app-ink);
   }
 
   .subtitle {
-    font-size: 1.25rem;
-    color: #555;
-    max-width: 1000px;
-    margin-bottom: 40px;
+    font-size: 1.1rem;
+    color: var(--app-ink-muted);
+    max-width: 800px;
+    margin: 0 auto 28px;
     line-height: 1.6;
   }
 }
 
 .features-section {
-  padding: 60px 0;
+  padding: 20px 0 52px;
 }
 
 .feature-card {
+  border-radius: 18px;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
   transition: transform 0.3s ease;
+
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
   }
 
   .icon-box {
-    background: #f0f2ff;
-    color: #3f51b5;
+    background: var(--app-surface-soft);
+    color: var(--app-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,18 +72,82 @@
 
 .action-row {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  align-content: center;
   justify-content: center;
   gap: 16px;
+
+  button[matFab] {
+    --mdc-fab-extended-container-color: var(--app-primary);
+    --mdc-fab-extended-label-text-color: #fff;
+    font-weight: 700;
+    border-radius: 999px;
+  }
+
+  button[matFab]:last-child {
+    --mdc-fab-extended-container-color: #fff;
+    --mdc-fab-extended-label-text-color: var(--app-primary);
+    border: 1px solid var(--app-border);
+  }
 }
+
+.ecosystem-strip {
+  padding: 0 0 54px;
+
+  .strip-content {
+    background: linear-gradient(110deg, var(--app-primary) 0%, var(--app-primary-strong) 75%);
+    color: #fff;
+    padding: 26px;
+    border-radius: 18px;
+  }
+
+  .logo-row {
+    margin-bottom: 12px;
+
+    img {
+      height: 36px;
+      width: auto;
+      max-width: min(360px, 100%);
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.95;
+    }
+  }
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 1.5rem;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.55;
+  }
+}
+
 // Animations
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out forwards;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-card {
+    padding: 24px;
+  }
+
+  .ecosystem-strip .logo-row img {
+    height: 30px;
+  }
 }

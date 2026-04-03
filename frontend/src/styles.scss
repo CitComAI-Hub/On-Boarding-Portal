@@ -7,24 +7,41 @@
 @use '@angular/material' as mat;
 
 :root {
-  --app-navy-gradient: linear-gradient(35deg, var(--mat-sys-primary) 0%, var(--mat-sys-on-primary-fixed) 100%);
-  --app-container-width: 1100px;
+  --app-container-width: 1160px;
+  --app-bg: #f4f8fc;
+  --app-surface: #ffffff;
+  --app-surface-soft: #eef4fb;
+  --app-ink: #0d2b4b;
+  --app-ink-muted: #4d6278;
+  --app-border: #c6d5e7;
+  --app-primary: #005aa7;
+  --app-primary-strong: #003f79;
+  --app-accent: #f2b632;
+  --app-shadow: 0 18px 35px rgba(13, 43, 75, 0.12);
 }
 
 html {
   color-scheme: light;
-  @include mat.theme((color: mat.$blue-palette,
-      typography: Roboto,
+  @include mat.theme((color: mat.$azure-palette,
+      typography: "Barlow",
       density: 0));
-  background: var(--app-navy-gradient);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: radial-gradient(circle at 14% 8%, #dceafb 0%, #edf4fb 42%, #f4f8fc 100%);
 }
 
 body {
   margin: 0;
-  box-sizing: content-box;
+  box-sizing: border-box;
+  color: var(--app-ink);
+  background:
+    linear-gradient(160deg, rgba(0, 90, 167, 0.08) 0%, rgba(0, 90, 167, 0) 45%),
+    linear-gradient(0deg, var(--app-bg), var(--app-bg));
+  font-family: "Barlow", "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 
@@ -71,4 +88,16 @@ body {
       grid-column: span 6;
     }
   }
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.surface-card {
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+  border-radius: 24px;
 }

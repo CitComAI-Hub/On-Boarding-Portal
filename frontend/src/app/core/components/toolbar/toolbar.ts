@@ -30,7 +30,6 @@ export class Toolbar {
     private readonly router: Router
   ) {
     this.user = this.authService.getUser();
-    console.log(this.user);
   }
 
   isLogged() {

@@ -2,25 +2,25 @@
 <main class="content-wrapper">
   <section class="hero-bg">
     <div class="container">
-      <mat-card class="main-card animate-fade-in">
+      <mat-card class="main-card surface-card animate-fade-in">
         <mat-card-content>
           <div class="hero-layout">
             <div class="text-content">
-              <h1 class="title">Scale Trust in your <br>Data Space</h1>
+              <p class="eyebrow">Espacio de Datos · Onboarding de entidades</p>
+              <h1 class="title">Impulsa la confianza en tu<br>ecosistema de datos</h1>
               <p class="subtitle">
-                Streamlining the integration of organizations into the Data Space, providing a simple and
-                secure environment for managing corporate Verifiable Credentials. Successful completion of the
-                onboarding process enables participation as a trusted ecosystem member.
+                Portal para incorporar organizaciones de forma segura, validando identidad digital y criterios
+                de gobernanza antes de operar dentro del espacio de datos.
               </p>
 
               <div class="action-row">
                 <button matFab extended (click)="onSubmit()">
                   <mat-icon>add_business</mat-icon>
-                  START ONBOARDING PROCESS
+                  INICIAR PROCESO DE ONBOARDING
                 </button>
                 <button matFab extended (click)="onSubmit('search')">
                   <mat-icon>search</mat-icon>
-                  CHECK ONBOARDING STATUS
+                  CONSULTAR ESTADO DE SOLICITUD
                 </button>
               </div>
             </div>
@@ -35,10 +35,10 @@
       <mat-card class="feature-card span-4" appearance="outlined">
         <mat-card-header>
           <div mat-card-avatar class="icon-box"><mat-icon>fingerprint</mat-icon></div>
-          <mat-card-title>Digital Identity</mat-card-title>
+          <mat-card-title>Identidad Digital</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>Link your organization's legal identity with decentralized identifiers (DID) for secure interoperability.
+          <p>Vincula la identidad legal de tu organización con identificadores descentralizados (DID).
           </p>
         </mat-card-content>
       </mat-card>
@@ -46,10 +46,10 @@
       <mat-card class="feature-card span-4" appearance="outlined">
         <mat-card-header>
           <div mat-card-avatar class="icon-box"><mat-icon>workspace_premium</mat-icon></div>
-          <mat-card-title>Trust Framework</mat-card-title>
+          <mat-card-title>Marco de Confianza</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>Validated onboarding ensures all participants comply with the specific governance rules of the data space.
+          <p>El proceso validado garantiza el cumplimiento de las reglas de gobernanza del espacio de datos.
           </p>
         </mat-card-content>
       </mat-card>
@@ -57,13 +57,25 @@
       <mat-card class="feature-card span-4" appearance="outlined">
         <mat-card-header>
           <div mat-card-avatar class="icon-box"><mat-icon>account_balance_wallet</mat-icon></div>
-          <mat-card-title>Wallet Ready</mat-card-title>
+          <mat-card-title>Listo para Operar</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>Once approved, your organization will be fully authorized to participate in the data spaces and interact
-            with other ecosystem members.</p>
+          <p>Una vez aprobada, tu entidad podrá participar e interoperar con otros miembros del ecosistema.</p>
         </mat-card-content>
       </mat-card>
+    </div>
+  </section>
+
+  <section class="ecosystem-strip">
+    <div class="container strip-content">
+      <div class="logo-row">
+        <img src="/logo-citcom.png" alt="CitCom" onerror="this.onerror=null;this.style.display='none';" />
+      </div>
+      <h2>Red europea de innovación y cumplimiento</h2>
+      <p>
+        Inspirado en la línea visual y narrativa de CitCom.ai: enfoque en validación real, despliegue responsable
+        y colaboración entre entidades públicas, tecnológicas y de investigación.
+      </p>
     </div>
   </section>
 </main>

@@ -7,9 +7,10 @@
 .table-container {
   position: relative;
   margin: 2rem auto;
-  border-radius: var(--mat-sys-corner-medium, 12px);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: var(--mat-sys-level1);
+  border: 1px solid var(--app-border);
+  box-shadow: var(--app-shadow);
 }
 
 /* --- Loading Shade --- */
@@ -30,8 +31,8 @@
 /* --- Filters Section --- */
 .filters-section {
   padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-  background-color: var(--mat-sys-surface-container-low);
-  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--app-surface-soft);
+  border-bottom: 1px solid var(--app-border);
 }
 
 .filters-grid {
@@ -53,7 +54,7 @@
 .table-responsive {
   width: 100%;
   overflow-x: auto;
-  background-color: var(--mat-sys-surface);
+  background-color: var(--app-surface);
 }
 
 .custom-styled-table {
@@ -61,8 +62,8 @@
   background: transparent;
 
   th.mat-header-cell {
-    background-color: var(--mat-sys-surface-container-low);
-    color: var(--mat-sys-on-surface);
+    background-color: var(--app-surface-soft);
+    color: var(--app-primary-strong);
     font-weight: 600;
     white-space: nowrap;
     padding: 0 16px;
@@ -70,7 +71,7 @@
 
   td.mat-cell {
     padding: 0 16px;
-    color: var(--mat-sys-on-surface-variant);
+    color: var(--app-ink-muted);
   }
 }
 
@@ -82,7 +83,8 @@
     background-color: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent) !important;
   }
 
-  &:focus, &:active {
+  &:focus,
+  &:active {
     outline: none;
     background-color: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent) !important;
   }
@@ -90,8 +92,8 @@
 
 /* --- Paginator --- */
 mat-paginator {
-  background-color: var(--mat-sys-surface-container-low);
-  border-top: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--app-surface-soft);
+  border-top: 1px solid var(--app-border);
 }
 
 mat-form-field {

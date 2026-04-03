@@ -15,6 +15,7 @@
   padding: 16px 32px;
   width: 100%;
   max-width: 1400px;
-  border-radius: var(--mat-sys-corner-large, 16px);
-  box-shadow: var(--mat-sys-level2);
+  border-radius: 20px;
+  border: 1px solid var(--app-border);
+  box-shadow: var(--app-shadow);
 }

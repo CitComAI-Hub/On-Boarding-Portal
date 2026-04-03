@@ -25,38 +25,38 @@ export class Dashboard {
   readonly columns: ColumnConfig[] = [
     {
       key: 'email',
-      label: 'Email Address',
+      label: 'Correo electronico',
       type: 'text',
     },
     {
       key: 'status',
-      label: 'Current Status',
+      label: 'Estado',
       type: 'text',
       uppercase: true,
       getValue: (row) => row.status.split("_").join(" ")
     },
     {
       key: 'createdAt',
-      label: 'Registration Date',
+      label: 'Fecha de registro',
       type: 'date',
       dateFormat: 'dd/MM/yyyy HH:mm'
     },
     {
       key: 'updatedAt',
-      label: 'Last Update',
+      label: 'Ultima actualizacion',
       type: 'date',
       dateFormat: 'dd/MM/yyyy HH:mm:ss'
     },
     {
       key: 'files',
-      label: '# Files',
+      label: 'N. documentos',
       type: 'number',
-      getValue: (row) => row.files? row.files?.length : 0
+      getValue: (row) => row.files ? row.files?.length : 0
     }
   ];
   readonly filters: FilterConfig[] = [{
     key: 'status',
-    label: 'Status',
+    label: 'Estado',
     type: 'enum',
     multiple: true,
     options: Object.keys(RegistrationStatus).map(key => ({
