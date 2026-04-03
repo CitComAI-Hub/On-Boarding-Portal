@@ -62,9 +62,17 @@
     }
 
     .lang-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
         border: 1px solid var(--app-border);
         border-radius: 999px;
         color: var(--app-primary-strong);
+    }
+
+    .lang-flag {
+        font-size: 1rem;
+        line-height: 1;
     }
 }
 
@@ -88,10 +96,10 @@
 
         .lang-button {
             min-width: auto;
+        }
 
-            .mdc-button__label {
-                display: none;
-            }
+        .lang-code {
+            display: none;
         }
     }
 }

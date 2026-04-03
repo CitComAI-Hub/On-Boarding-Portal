@@ -33,13 +33,19 @@
             }
 
             <button mat-button [matMenuTriggerFor]="languageMenu" class="lang-button">
-                <mat-icon>language</mat-icon>
-                {{ ui.language().toUpperCase() }}
+                <span class="lang-flag" aria-hidden="true">{{ ui.language() === 'es' ? '🇪🇸' : '🇬🇧' }}</span>
+                <span class="lang-code">{{ ui.language().toUpperCase() }}</span>
             </button>
 
             <mat-menu #languageMenu="matMenu">
-                <button mat-menu-item (click)="ui.setLanguage('en')">{{ ui.t('toolbar.langEnglish') }}</button>
-                <button mat-menu-item (click)="ui.setLanguage('es')">{{ ui.t('toolbar.langSpanish') }}</button>
+                <button mat-menu-item (click)="ui.setLanguage('en')">
+                    <span class="lang-flag" aria-hidden="true">🇬🇧</span>
+                    {{ ui.t('toolbar.langEnglish') }}
+                </button>
+                <button mat-menu-item (click)="ui.setLanguage('es')">
+                    <span class="lang-flag" aria-hidden="true">🇪🇸</span>
+                    {{ ui.t('toolbar.langSpanish') }}
+                </button>
             </mat-menu>
 
             <button mat-icon-button type="button" [attr.aria-label]="ui.t('toolbar.theme')" (click)="ui.toggleTheme()">

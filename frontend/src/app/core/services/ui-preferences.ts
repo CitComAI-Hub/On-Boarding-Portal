@@ -176,8 +176,8 @@ export class UiPreferencesService {
             'toolbar.logout': 'Cerrar sesion',
             'toolbar.theme': 'Cambiar tema',
             'toolbar.language': 'Idioma',
-            'toolbar.langEnglish': 'Ingles',
-            'toolbar.langSpanish': 'Espanol',
+            'toolbar.langEnglish': 'Inglés',
+            'toolbar.langSpanish': 'Español',
             'toolbar.openProject': 'Web del Proyecto',
             'toolbar.openMarketplace': 'Marketplace',
 
