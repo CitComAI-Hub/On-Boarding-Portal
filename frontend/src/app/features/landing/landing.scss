@@ -13,6 +13,7 @@
   padding: 30px;
   overflow: hidden;
   border-top: 5px solid var(--app-primary);
+  background: var(--app-surface) !important;
 }
 
 .hero-grid {
@@ -134,12 +135,12 @@
   }
 
   .secondary-action {
-    background-color: var(--app-white) !important;
-    color: var(--app-primary) !important;
+    background-color: var(--app-surface-soft) !important;
+    color: var(--app-ink) !important;
     border: 1px solid var(--app-border);
 
     mat-icon {
-      color: var(--app-primary) !important;
+      color: var(--app-ink) !important;
     }
   }
 }
@@ -151,7 +152,7 @@
 
   button[mat-stroked-button] {
     border-color: var(--app-border);
-    color: var(--app-primary-strong);
+    color: var(--app-ink);
     border-radius: 999px;
     font-weight: 600;
   }
@@ -173,7 +174,7 @@
   h2 {
     margin: 0 0 8px;
     font-size: 1.65rem;
-    color: var(--app-primary-strong);
+    color: var(--app-ink);
   }
 
   p {
@@ -213,7 +214,7 @@
 
   strong {
     font-size: 2rem;
-    color: var(--app-primary-strong);
+    color: var(--app-ink);
   }
 }
 

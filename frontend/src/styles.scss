@@ -55,6 +55,9 @@
   --mat-sys-on-primary: var(--app-white);
   --mat-sys-primary-fixed: var(--app-primary);
   --mat-sys-on-primary-fixed: var(--app-bg);
+
+  --mdc-elevated-card-container-color: var(--app-surface);
+  --mdc-outlined-card-container-color: var(--app-surface);
 }
 
 :root[data-theme='dark'] {
@@ -80,6 +83,8 @@
   --app-status-active-bg: #20362b;
   --app-status-active-text: #8fe0ae;
   --app-status-active-border: #2e5740;
+
+  color-scheme: dark;
 }
 
 html {
@@ -161,6 +166,11 @@ body {
 .surface-card {
   border: 1px solid var(--app-border);
   background: var(--app-surface);
+  color: var(--app-ink);
   box-shadow: var(--app-shadow);
   border-radius: 24px;
+}
+
+.mat-mdc-card {
+  color: var(--app-ink);
 }

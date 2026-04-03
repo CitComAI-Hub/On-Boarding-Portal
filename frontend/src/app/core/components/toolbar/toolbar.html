@@ -1,8 +1,9 @@
 <mat-toolbar color="primary" class="main-header mat-elevation-z4">
     <div class="header-container">
         <div class="brand" (click)="goLanding()">
-            <img src="/logo-citcom.png" width="170" height="40" alt="CitCom"
-                onerror="this.onerror=null;this.src='/favicon.ico';this.width=54;this.height=54;" />
+            <img [src]="ui.theme() === 'dark' ? '/logo-citcom-white.png' : '/logo-citcom.png'"
+                [class.dark-logo-fallback]="ui.theme() === 'dark'" width="170" height="40" alt="CitCom"
+                onerror="this.onerror=null;this.src='/logo-citcom.png';" />
             <div class="brand-text">
                 <strong>{{ ui.t('toolbar.portal') }}</strong>
                 <span>{{ ui.t('toolbar.space') }}</span>
