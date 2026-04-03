@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../core/services/notification';
 import { Toolbar } from '../../core/components/toolbar/toolbar';
 import { RegistrationForm } from '../../core/components/registration-form/registration-form';
+import { UiPreferencesService } from '../../core/services/ui-preferences';
 
 const ANCHOR_SECTIONS: string[] = [
   'register',
@@ -55,7 +56,8 @@ export class Submit {
     private notification: NotificationService,
     private onBoardingService: OnBoardingService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    readonly ui: UiPreferencesService,
   ) {
     const fragment = this.route.snapshot.fragment;
     this.selectedTabIndex = (fragment ? ANCHOR_SECTIONS.indexOf(fragment) : 0) || 0
@@ -86,7 +88,7 @@ export class Submit {
       error: (error) => {
         console.error("Error getting registration", error);
         this.isProcessing.set(false);
-        this.notification.error(`Registration request ${this.registrationId} not found`);
+        this.notification.error(this.ui.replace('submit.notFound', { id }));
         this.setIdQueryParam();
       }
     })

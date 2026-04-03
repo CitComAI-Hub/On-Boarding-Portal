@@ -66,7 +66,11 @@ appServer.use((_req, res) => {
 
 (async () => {
   try {
-    renderedIndex = await ejs.renderFile(indexPath, { documentToSignUrl: app.documentToSignUrl });
+    renderedIndex = await ejs.renderFile(indexPath, {
+      documentToSignUrl: app.documentToSignUrl,
+      projectWebsiteUrl: app.projectWebsiteUrl,
+      marketplaceUrl: app.marketplaceUrl,
+    });
     await initializeDatabase()
   } catch (error) {
     logger.error('Error connecting to the database', error);

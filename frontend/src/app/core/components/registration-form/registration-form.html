@@ -1,106 +1,107 @@
 <div class="tab-content">
     @if(!registrationId) {
     <header class="section-header">
-        <h2>Registro de organizacion</h2>
-        <p>Sigue los pasos para iniciar tu integracion en el espacio de datos.</p>
+        <h2>{{ ui.t('form.headerTitle') }}</h2>
+        <p>{{ ui.t('form.headerDesc') }}</p>
     </header>
 
     <mat-stepper linear #stepper animationDuration="400ms">
         <mat-step [stepControl]="orgForm" errorMessage="Required">
-            <ng-template matStepLabel>Datos de la empresa</ng-template>
+            <ng-template matStepLabel>{{ ui.t('form.stepCompany') }}</ng-template>
 
             <form [formGroup]="orgForm" class="grid-layout">
                 <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>Razon social</mat-label>
+                    <mat-label>{{ ui.t('form.name') }}</mat-label>
                     <input matInput formControlName="name" placeholder="e.g. Acme Corporation S.L.">
                     <mat-icon matSuffix>corporate_fare</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>Direccion completa</mat-label>
+                    <mat-label>{{ ui.t('form.address') }}</mat-label>
                     <input matInput formControlName="address" placeholder="e.g. 123 Business St. Suite 400">
                     <mat-icon matSuffix>place</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>Ciudad</mat-label>
+                    <mat-label>{{ ui.t('form.city') }}</mat-label>
                     <input matInput formControlName="city" placeholder="e.g. Madrid">
                     <mat-icon matSuffix>location_city</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>Pais</mat-label>
+                    <mat-label>{{ ui.t('form.country') }}</mat-label>
                     <input matInput formControlName="country" placeholder="e.g. Spain">
                     <mat-icon matSuffix>public</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>Codigo postal</mat-label>
+                    <mat-label>{{ ui.t('form.postCode') }}</mat-label>
                     <input matInput formControlName="postCode" placeholder="e.g. 28001">
                     <mat-icon matSuffix>local_post_office</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                    <mat-label>Identificador fiscal (VAT/CIF)</mat-label>
+                    <mat-label>{{ ui.t('form.taxId') }}</mat-label>
                     <input matInput formControlName="taxId" placeholder="e.g. ESA12345678">
                     <mat-icon matSuffix>badge</mat-icon>
                 </mat-form-field>
             </form>
             <div class="stepper-actions">
-                <button mat-flat-button color="primary" matStepperNext [disabled]="orgForm.invalid">SIGUIENTE</button>
+                <button mat-flat-button color="primary" matStepperNext [disabled]="orgForm.invalid">{{ ui.t('form.next')
+                    }}</button>
             </div>
         </mat-step>
         <mat-step [stepControl]="contactForm" errorMessage="Required">
-            <ng-template matStepLabel>Datos de contacto</ng-template>
+            <ng-template matStepLabel>{{ ui.t('form.stepContact') }}</ng-template>
 
             <form [formGroup]="contactForm" class="grid-layout">
                 <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>Email de contacto administrativo</mat-label>
+                    <mat-label>{{ ui.t('form.adminEmail') }}</mat-label>
                     <input matInput formControlName="email" type="email" placeholder="compliance@entity.com">
                     <mat-icon matSuffix>alternate_email</mat-icon>
                     @if(contactForm.get('email')?.hasError('email')) {
                     <mat-error>
-                        Introduce un correo <strong>valido</strong>
+                        {{ ui.t('form.invalidEmail') }}
                     </mat-error>
                     }
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>Decentralized Identifier (DID)</mat-label>
+                    <mat-label>{{ ui.t('form.did') }}</mat-label>
                     <input matInput formControlName="did" placeholder="did:web:domain.com">
                     <mat-icon matSuffix>fingerprint</mat-icon>
                     <!-- <mat-hint>Empty field triggers automated DID generation.</mat-hint> -->
                     @if(contactForm.get('did')?.hasError('pattern')) {
                     <mat-error>
-                        Formato DID invalido. Debe seguir <strong>did:method:id</strong> (por ejemplo,
-                        did:web:example.com)
+                        {{ ui.t('form.invalidDid') }}
                     </mat-error>
                     }
                 </mat-form-field>
             </form>
 
             <div class="stepper-actions">
-                <button mat-button matStepperPrevious>ATRAS</button>
-                <button mat-flat-button color="primary" matStepperNext
-                    [disabled]="contactForm.invalid">SIGUIENTE</button>
+                <button mat-button matStepperPrevious>{{ ui.t('form.back') }}</button>
+                <button mat-flat-button color="primary" matStepperNext [disabled]="contactForm.invalid">{{
+                    ui.t('form.next') }}</button>
             </div>
         </mat-step>
         <mat-step [stepControl]="legalForm" errorMessage="Required">
-            <ng-template matStepLabel>Documento firmado</ng-template>
-            <p>Lee el siguiente <a class="documentPdfLink" matTooltip="Abrir acuerdo de aceptacion"
-                    matTooltipShowDelay="1500" [href]="pdfDocumentUrl" target="_blank">documento</a> y subelo firmado.
+            <ng-template matStepLabel>{{ ui.t('form.stepDocument') }}</ng-template>
+            <p>{{ ui.t('form.readDocPrefix') }} <a class="documentPdfLink" [matTooltip]="ui.t('form.readDocTooltip')"
+                    matTooltipShowDelay="1500" [href]="pdfDocumentUrl" target="_blank">{{ ui.t('form.readDocLink')
+                    }}</a> {{ ui.t('form.readDocSuffix') }}
             </p>
-            <app-upload-file label="Acuerdo de aceptacion firmado" accept="application/pdf" [maxFileSizeMB]="5"
+            <app-upload-file [label]="ui.t('form.signedAgreement')" accept="application/pdf" [maxFileSizeMB]="5"
                 [multiple]="false" (filesChanged)="onFileSelected($event)" />
             <div class="actions-footer">
                 @if(isProcessing()) {
                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                 }
                 <div class="stepper-actions">
-                    <button mat-button matStepperPrevious>ATRAS</button>
+                    <button mat-button matStepperPrevious>{{ ui.t('form.back') }}</button>
                     <button mat-flat-button color="primary" [disabled]="legalForm.invalid || isProcessing()"
                         (click)="submitRegistration()">
-                        ENVIAR SOLICITUD
+                        {{ ui.t('form.submit') }}
                     </button>
                 </div>
             </div>
@@ -109,13 +110,12 @@
 
     } @else {
     <div class="success-container animate-fade-in">
-        <h2>Solicitud recibida</h2>
+        <h2>{{ ui.t('form.submitSuccessTitle') }}</h2>
         <p class="success-description">
-            La solicitud se ha enviado correctamente para revision. Se ha mandado un correo de confirmacion
-            a la direccion administrativa indicada. Guarda el siguiente ID para consultar el estado.
+            {{ ui.t('form.submitSuccessDesc') }}
         </p>
-        <app-copy-input class="id-input-field" [value]="registrationId" label="ID de solicitud"
-            hint="Usa este ID para consultar el estado en la pestana de seguimiento."></app-copy-input>
+        <app-copy-input class="id-input-field" [value]="registrationId" [label]="ui.t('form.copyLabel')"
+            [hint]="ui.t('form.copyHint')"></app-copy-input>
     </div>
     }
 </div>

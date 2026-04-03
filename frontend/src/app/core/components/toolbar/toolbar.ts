@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { UiPreferencesService } from '../../services/ui-preferences';
 
 @Component({
   selector: 'app-toolbar',
@@ -27,7 +28,8 @@ export class Toolbar {
   user: any;
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    readonly ui: UiPreferencesService
   ) {
     this.user = this.authService.getUser();
   }
@@ -58,5 +60,9 @@ export class Toolbar {
   onLogout(): void {
     this.authService.logout()
     this.goLanding();
+  }
+
+  openExternal(url: string): void {
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 }

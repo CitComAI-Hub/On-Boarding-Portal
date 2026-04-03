@@ -57,6 +57,31 @@
   --mat-sys-on-primary-fixed: var(--app-bg);
 }
 
+:root[data-theme='dark'] {
+  --app-bg: #14181f;
+  --app-surface: #1c222c;
+  --app-surface-soft: #252d39;
+  --app-surface-soft-strong: #303846;
+  --app-ink: #edf1f7;
+  --app-ink-muted: #b3bcc9;
+  --app-border: #3b4555;
+  --app-border-subtle: rgba(255, 255, 255, 0.12);
+  --app-overlay-soft: rgba(255, 255, 255, 0.08);
+  --app-shadow: 0 18px 35px rgba(0, 0, 0, 0.45);
+  --app-shadow-soft: 0 2px 4px rgba(0, 0, 0, 0.35);
+  --app-toolbar-surface: color-mix(in srgb, var(--app-surface) 92%, #000000);
+
+  --app-status-pending-bg: #2a3341;
+  --app-status-under-review-bg: #3a3324;
+  --app-status-under-review-text: #f5c36e;
+  --app-status-rejected-bg: #3c262a;
+  --app-status-rejected-text: #f1a0a7;
+  --app-status-rejected-border: #5d373d;
+  --app-status-active-bg: #20362b;
+  --app-status-active-text: #8fe0ae;
+  --app-status-active-border: #2e5740;
+}
+
 html {
   color-scheme: light;
   @include mat.theme((color: mat.$azure-palette,
@@ -73,6 +98,7 @@ body {
     linear-gradient(160deg, rgba(var(--app-primary-rgb), 0.08) 0%, rgba(var(--app-primary-rgb), 0) 45%),
     linear-gradient(0deg, var(--app-bg), var(--app-bg));
   font-family: "Barlow", "Segoe UI", sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 *,

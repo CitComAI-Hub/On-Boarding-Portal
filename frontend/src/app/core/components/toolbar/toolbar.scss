@@ -13,6 +13,7 @@
         max-width: var(--app-container-width);
         margin: 0 auto;
         gap: 14px;
+        padding: 6px 10px;
     }
 
     .brand {
@@ -54,6 +55,24 @@
         font-weight: 700;
     }
 
+    .toolbar-links {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .lang-button {
+        border: 1px solid var(--app-border);
+        border-radius: 999px;
+        color: var(--app-primary-strong);
+    }
+
     .cta-small {
         --mdc-filled-button-container-color: var(--app-primary);
         --mdc-filled-button-label-text-color: var(--app-text-on-dark);
@@ -68,12 +87,28 @@
 
 @media (max-width: 760px) {
     .main-header {
+        .toolbar-links {
+            display: none;
+        }
+
         .brand img {
             max-width: 120px;
         }
 
         .brand-text span {
             display: none;
+        }
+
+        .toolbar-actions {
+            gap: 4px;
+        }
+
+        .lang-button {
+            min-width: auto;
+
+            .mdc-button__label {
+                display: none;
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ import { OnBoardingService, REGISTRATION_UPDATE_KEYS } from '../../services/onbo
 import { Subscription } from 'rxjs';
 import { UploadFile } from '../upload-file/upload-file';
 import { MatTabsModule } from '@angular/material/tabs';
+import { UiPreferencesService } from '../../services/ui-preferences';
 
 @Component({
   selector: 'app-registration-details',
@@ -49,7 +50,8 @@ export class RegistrationDetails implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private notification: NotificationService,
-    private onBoardingService: OnBoardingService
+    private onBoardingService: OnBoardingService,
+    readonly ui: UiPreferencesService,
   ) {
     if (this.editable()) {
       effect(() => {
@@ -113,7 +115,7 @@ export class RegistrationDetails implements OnInit, OnDestroy {
   saveChanges(): void {
     if (this.registrationForm.valid && this.registrationForm.dirty) {
       this.cancelReview(false);
-      const {files, ...data} = this.getDirtyValues(this.registrationForm)
+      const { files, ...data } = this.getDirtyValues(this.registrationForm)
       console.log('Pushing updates to backend...', data);
       REGISTRATION_UPDATE_KEYS.forEach(field => {
         data[field] = this.registrationForm.get(field)?.getRawValue();
@@ -124,12 +126,12 @@ export class RegistrationDetails implements OnInit, OnDestroy {
           console.log("Update response", resp);
           this.registration.set(resp);
           this.registrationForm.patchValue(resp);
-          this.notification.show('Registration updated')
+          this.notification.show(this.ui.t('details.updatedOk'))
         },
         error: (error) => {
           this.enableReview();
           console.error("Error updating registry", error);
-          this.notification.error('Registration update failed')
+          this.notification.error(this.ui.t('details.updatedFail'))
         }
       })
     }

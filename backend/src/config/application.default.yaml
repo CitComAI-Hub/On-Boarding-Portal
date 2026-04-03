@@ -25,29 +25,31 @@ database:
   type: postgres
   host: localhost
   port: 5432
-  username: ''
-  password: ''
+  username: ""
+  password: ""
   database: onboarding
   synchronize: true
   logging: false
 app:
+  projectWebsiteUrl: "https://citcomtef.eu/"
+  marketplaceUrl: "https://marketplace.example.com/"
   login:
-    openIdUrl: ''
-    clientId: ''
-    clientSecret: ''
+    openIdUrl: ""
+    clientId: ""
+    clientSecret: ""
     scope: openid
     codeChallenge: true
   keycloak:
     grantType: password
-    clientId: 'admin-cli'
+    clientId: "admin-cli"
   tir: {}
 email:
   enabled: false
-  type: 'nodemailer'
-  from: 'onboarding@seamware.com'
+  type: "nodemailer"
+  from: "onboarding@seamware.com"
   update:
-    subject: 'OnBoarding Portal - Registration updated'
-    html: 'file://./templates/update.html'
+    subject: "OnBoarding Portal - Registration updated"
+    html: "file://./templates/update.html"
   submit:
-    subject: 'OnBoarding Portal - Registration submited'
-    html: 'file://./templates/submit.html'
+    subject: "OnBoarding Portal - Registration submited"
+    html: "file://./templates/submit.html"

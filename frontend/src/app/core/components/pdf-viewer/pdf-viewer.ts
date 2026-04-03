@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { UiPreferencesService } from '../../services/ui-preferences';
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -18,6 +19,7 @@ export class PdfViewer {
   constructor(
     private sanitizer: DomSanitizer,
     private dialogRef: MatDialogRef<PdfViewer>,
+    readonly ui: UiPreferencesService,
     @Inject(MAT_DIALOG_DATA) public data: { blob: Blob; title?: string }
   ) { }
 

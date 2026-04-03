@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { UiPreferencesService } from '../../services/ui-preferences';
 
 @Component({
   selector: 'app-paginated-table',
@@ -37,7 +38,7 @@ export class PaginatedTable<T> implements OnInit {
   @Input() columnsConfig: ColumnConfig[] = [];
   @Input() filtersConfig?: FilterConfig[];
   @Input() pageSizeOptions: number[] = [10, 25, 50];
-  @Input() emptyMessage: string = "No records found."
+  @Input() emptyMessage: string = '';
   @Output() rowClick = new EventEmitter<T>();
 
   get displayedColumns(): string[] {
@@ -51,6 +52,10 @@ export class PaginatedTable<T> implements OnInit {
   currentPage = 0;
   isLoading = signal(false);
   filterForm = new FormGroup({});
+
+  constructor(readonly ui: UiPreferencesService) {
+    this.emptyMessage = this.ui.t('table.noRecords');
+  }
 
   ngOnInit(): void {
     if (this.filtersConfig) {

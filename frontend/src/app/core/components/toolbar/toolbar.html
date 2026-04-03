@@ -4,23 +4,46 @@
             <img src="/logo-citcom.png" width="170" height="40" alt="CitCom"
                 onerror="this.onerror=null;this.src='/favicon.ico';this.width=54;this.height=54;" />
             <div class="brand-text">
-                <strong>Portal de Onboarding</strong>
-                <span>Espacio de Datos</span>
+                <strong>{{ ui.t('toolbar.portal') }}</strong>
+                <span>{{ ui.t('toolbar.space') }}</span>
             </div>
         </div>
-        <span class="spacer"></span>
-        @if(showAdminLogin || showOnBoarding || showUserMenu) {
-        <div>
-            @if(showAdminLogin) {
 
+        <nav class="toolbar-links">
+            <button mat-button class="nav-link" (click)="openExternal(ui.projectWebsiteUrl)">
+                {{ ui.t('toolbar.openProject') }}
+            </button>
+            <button mat-button class="nav-link" (click)="openExternal(ui.marketplaceUrl)">
+                {{ ui.t('toolbar.openMarketplace') }}
+            </button>
+        </nav>
+
+        <span class="spacer"></span>
+        <div class="toolbar-actions">
+            <button mat-icon-button type="button" [attr.aria-label]="ui.t('toolbar.theme')" (click)="ui.toggleTheme()">
+                <mat-icon>{{ ui.theme() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+            </button>
+
+            <button mat-button [matMenuTriggerFor]="languageMenu" class="lang-button">
+                <mat-icon>language</mat-icon>
+                {{ ui.language().toUpperCase() }}
+            </button>
+
+            <mat-menu #languageMenu="matMenu">
+                <button mat-menu-item (click)="ui.setLanguage('en')">{{ ui.t('toolbar.langEnglish') }}</button>
+                <button mat-menu-item (click)="ui.setLanguage('es')">{{ ui.t('toolbar.langSpanish') }}</button>
+            </mat-menu>
+
+            @if(showAdminLogin || showOnBoarding || showUserMenu) {
+            @if(showAdminLogin) {
             <button mat-button class="nav-link" (click)="onAdminLogin()">
                 <mat-icon>lock_open</mat-icon>
-                PORTAL ADMIN
+                {{ ui.t('toolbar.admin') }}
             </button>
             }
             @if(showOnBoarding) {
             <button mat-flat-button color="accent" class="cta-small" (click)="onSubmit()">
-                INICIAR ONBOARDING
+                {{ ui.t('toolbar.start') }}
             </button>
             }
             @if(showUserMenu && user) {
@@ -32,10 +55,10 @@
                 <button mat-menu-item disabled>
                     <p>{{ user.preferred_username }}</p>
                 </button>
-                <button (click)="onLogout()" mat-menu-item>Cerrar sesion</button>
+                <button (click)="onLogout()" mat-menu-item>{{ ui.t('toolbar.logout') }}</button>
             </mat-menu>
             }
+            }
         </div>
-        }
     </div>
 </mat-toolbar>

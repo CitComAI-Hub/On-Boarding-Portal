@@ -9,7 +9,7 @@
                 <mat-tab>
                     <ng-template mat-tab-label>
                         <mat-icon class="tab-icon">add</mat-icon>
-                        <span>REGISTRAR ENTIDAD</span>
+                        <span>{{ ui.t('submit.tabRegister') }}</span>
                     </ng-template>
                     <div class="tab-content">
                         <app-registration-form />
@@ -18,15 +18,15 @@
                 <mat-tab>
                     <ng-template mat-tab-label>
                         <mat-icon class="tab-icon">track_changes</mat-icon>
-                        <span>SEGUIMIENTO</span>
+                        <span>{{ ui.t('submit.tabTrack') }}</span>
                     </ng-template>
 
                     <div class="tab-content">
                         <div class="status-lookup-wrapper">
                             @if(!trackedRegistration) {
                             <div class="search-info">
-                                <h2>Retomar solicitud</h2>
-                                <p>Consulta el estado de una solicitud enviada previamente.</p>
+                                <h2>{{ ui.t('submit.resumeTitle') }}</h2>
+                                <p>{{ ui.t('submit.resumeDesc') }}</p>
                             </div>
                             }
                             @if(isProcessing()){
@@ -34,7 +34,7 @@
                             }
                             @if(!_editing()) {
                             <mat-form-field appearance="outline" style="width: 100%; margin-top: 24px;">
-                                <mat-label>ID de seguimiento</mat-label>
+                                <mat-label>{{ ui.t('submit.trackingId') }}</mat-label>
                                 <input matInput [(ngModel)]="trackingId">
                                 <button mat-icon-button matSuffix (click)="onSearch()" [disabled]="!trackingId">
                                     <mat-icon>search</mat-icon>

@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PdfViewer } from '../pdf-viewer/pdf-viewer';
 import { Subscription } from 'rxjs';
 import { MatTabsModule } from '@angular/material/tabs';
+import { UiPreferencesService } from '../../services/ui-preferences';
 
 @Component({
   selector: 'app-admin-registration-details',
@@ -47,7 +48,8 @@ export class AdminRegistrationDetails implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private notification: NotificationService,
     private onBoardingService: OnBoardingService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    readonly ui: UiPreferencesService,
   ) {
     effect(() => {
       if (this.registrationForm) {
@@ -66,19 +68,19 @@ export class AdminRegistrationDetails implements OnInit, OnDestroy {
   initForm() {
     this.registrationForm = this.fb.group({
       status: [this.registration().status],
-      did: [{value: this.registration().did, disabled: true}],
+      did: [{ value: this.registration().did, disabled: true }],
       id: [{ value: this.registration().id, disabled: true }],
       email: [{ value: this.registration().email, disabled: true }],
       createdAt: [{ value: this.registration().createdAt, disabled: true }],
       updatedAt: [{ value: this.registration().updatedAt, disabled: true }],
       files: [''],
       reason: [this.registration().reason, [conditionalValidator(() => this.needRevision())]],
-      name: [{value: this.registration().name, disabled: true}],
-      taxId: [{value: this.registration().taxId, disabled: true}],
-      address: [{value: this.registration().address, disabled: true}],
-      city: [{value: this.registration().city, disabled: true}],
-      postCode: [{value: this.registration().postCode, disabled: true}],
-      country: [{value: this.registration().country, disabled: true}]
+      name: [{ value: this.registration().name, disabled: true }],
+      taxId: [{ value: this.registration().taxId, disabled: true }],
+      address: [{ value: this.registration().address, disabled: true }],
+      city: [{ value: this.registration().city, disabled: true }],
+      postCode: [{ value: this.registration().postCode, disabled: true }],
+      country: [{ value: this.registration().country, disabled: true }]
     });
 
     this.destroy$ = this.registrationForm.get('status')?.valueChanges
@@ -112,12 +114,12 @@ export class AdminRegistrationDetails implements OnInit, OnDestroy {
         next: (resp) => {
           console.log("Update response", resp);
           this.registration.set(resp);
-          this.notification.show('Registration updated')
+          this.notification.show(this.ui.t('details.updatedOk'))
         },
         error: (error) => {
           this.enableReview();
           console.error("Error updating registry", error);
-          this.notification.error('Registration update failed')
+          this.notification.error(this.ui.t('details.updatedFail'))
         }
       })
     }
@@ -143,7 +145,7 @@ export class AdminRegistrationDetails implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.log("Error download file", error);
-        this.notification.error("Error opening file");
+        this.notification.error(this.ui.t('pdf.invalid'));
       }
     })
   }

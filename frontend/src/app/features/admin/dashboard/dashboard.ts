@@ -9,6 +9,7 @@ import { FilterConfig } from '../../../core/types/table-filter';
 import { RegistrationStatus } from '../../../core/types/registration-status';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+import { UiPreferencesService } from '../../../core/services/ui-preferences';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,50 +21,57 @@ export class Dashboard {
 
   constructor(
     private onBoardingService: OnBoardingService,
-    private readonly router: Router
+    private readonly router: Router,
+    readonly ui: UiPreferencesService,
   ) { }
-  readonly columns: ColumnConfig[] = [
-    {
-      key: 'email',
-      label: 'Correo electronico',
-      type: 'text',
-    },
-    {
+
+  get columns(): ColumnConfig[] {
+    return [
+      {
+        key: 'email',
+        label: this.ui.t('dashboard.colEmail'),
+        type: 'text',
+      },
+      {
+        key: 'status',
+        label: this.ui.t('dashboard.colStatus'),
+        type: 'text',
+        uppercase: true,
+        getValue: (row) => row.status.split('_').join(' '),
+      },
+      {
+        key: 'createdAt',
+        label: this.ui.t('dashboard.colCreatedAt'),
+        type: 'date',
+        dateFormat: 'dd/MM/yyyy HH:mm',
+      },
+      {
+        key: 'updatedAt',
+        label: this.ui.t('dashboard.colUpdatedAt'),
+        type: 'date',
+        dateFormat: 'dd/MM/yyyy HH:mm:ss',
+      },
+      {
+        key: 'files',
+        label: this.ui.t('dashboard.colFiles'),
+        type: 'number',
+        getValue: (row) => (row.files ? row.files?.length : 0),
+      },
+    ];
+  }
+
+  get filters(): FilterConfig[] {
+    return [{
       key: 'status',
-      label: 'Estado',
-      type: 'text',
-      uppercase: true,
-      getValue: (row) => row.status.split("_").join(" ")
-    },
-    {
-      key: 'createdAt',
-      label: 'Fecha de registro',
-      type: 'date',
-      dateFormat: 'dd/MM/yyyy HH:mm'
-    },
-    {
-      key: 'updatedAt',
-      label: 'Ultima actualizacion',
-      type: 'date',
-      dateFormat: 'dd/MM/yyyy HH:mm:ss'
-    },
-    {
-      key: 'files',
-      label: 'N. documentos',
-      type: 'number',
-      getValue: (row) => row.files ? row.files?.length : 0
-    }
-  ];
-  readonly filters: FilterConfig[] = [{
-    key: 'status',
-    label: 'Estado',
-    type: 'enum',
-    multiple: true,
-    options: Object.keys(RegistrationStatus).map(key => ({
-      label: key.split("_").join(" "),
-      value: String(RegistrationStatus[key as keyof typeof RegistrationStatus])
-    }))
-  }];
+      label: this.ui.t('dashboard.colStatus'),
+      type: 'enum',
+      multiple: true,
+      options: Object.keys(RegistrationStatus).map((key) => ({
+        label: key.split('_').join(' '),
+        value: String(RegistrationStatus[key as keyof typeof RegistrationStatus]),
+      })),
+    }];
+  }
 
   fetchRegistrations: PageQueryFn<Registration> = (page: number, limit: number, filter: { [key: string]: any }) => {
     const { status } = filter

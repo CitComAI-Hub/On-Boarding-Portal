@@ -8,10 +8,12 @@ import { OnBoardingService } from '../../../core/services/onboarding.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AdminRegistrationDetails } from '../../../core/components/admin-registration-details/admin-registration-details';
+import { UiPreferencesService } from '../../../core/services/ui-preferences';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-review',
-  imports: [AdminRegistrationDetails, MatProgressBarModule, MatCardModule, Toolbar, MatIconModule, MatButtonModule],
+  imports: [AdminRegistrationDetails, MatProgressBarModule, MatCardModule, Toolbar, MatIconModule, MatButtonModule, MatTooltipModule],
   templateUrl: './review.html',
   styleUrl: './review.scss',
 })
@@ -24,7 +26,8 @@ export class Review implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private onBoardingService: OnBoardingService,
-    private router: Router
+    private router: Router,
+    readonly ui: UiPreferencesService,
   ) {
     this.registrationId = this.route.snapshot.paramMap.get('registrationId')!;
   }

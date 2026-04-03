@@ -10,6 +10,8 @@ database:
 
 app:
   documentToSignUrl: "https://example.com/documento-a-firmar.pdf"
+  projectWebsiteUrl: "https://citcomtef.eu/"
+  marketplaceUrl: "https://marketplace.example.com/"
   tir:
     url: "https://example.com/issuer"
   login:

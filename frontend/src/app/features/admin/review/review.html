@@ -4,10 +4,10 @@
         <mat-card class="dashboard-card">
             <mat-card-header>
                 <div class="header-container">
-                    <button mat-icon-button (click)="goBack()" type="button" matTooltip="Volver al paso anterior">
+                    <button mat-icon-button (click)="goBack()" type="button" [matTooltip]="ui.t('review.back')">
                         <mat-icon>arrow_back</mat-icon>
                     </button>
-                    <mat-card-title>Revision de solicitudes</mat-card-title>
+                    <mat-card-title>{{ ui.t('review.title') }}</mat-card-title>
                 </div>
             </mat-card-header>
             <br />
@@ -19,12 +19,11 @@
                 } @else {
                 <div class="error-container mat-elevation-z2">
                     <mat-icon class="error-icon">search_off</mat-icon>
-                    <h2>No se encontro la solicitud</h2>
-                    <p>No se han encontrado detalles para el ID indicado. Puede haberse eliminado o no tienes permisos
-                        para verlo.</p>
+                    <h2>{{ ui.t('review.notFoundTitle') }}</h2>
+                    <p>{{ ui.t('review.notFoundBody') }}</p>
                     <button mat-flat-button color="primary" (click)="goBack()">
                         <mat-icon>arrow_back</mat-icon>
-                        VOLVER AL PANEL
+                        {{ ui.t('review.backToDashboard') }}
                     </button>
                 </div>
                 }

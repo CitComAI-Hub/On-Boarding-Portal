@@ -23,11 +23,11 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class CopyInput {
 
-  @Input() label: string = 'ID de solicitud';
+  @Input() label: string = 'Registration ID';
   @Input() value: string = '';
   @Input() hint: string = '';
-  @Input() notificationText: string = 'Copiado al portapapeles'
-  @Input() tooltipText: string = 'Copiar al portapapeles';
+  @Input() notificationText: string = 'Copied to clipboard'
+  @Input() tooltipText: string = 'Copy to clipboard';
   @Input() appearance: MatFormFieldAppearance = 'fill'
   @Input() readonly: boolean = true;
   @Input() disabled: boolean = false;

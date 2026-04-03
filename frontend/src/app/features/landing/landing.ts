@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { Toolbar } from "../../core/components/toolbar/toolbar";
+import { UiPreferencesService } from '../../core/services/ui-preferences';
 
 @Component({
   selector: 'app-landing',
@@ -19,19 +20,24 @@ import { Toolbar } from "../../core/components/toolbar/toolbar";
     MatCardModule,
     MatDividerModule,
     Toolbar
-],
+  ],
   templateUrl: './landing.html',
   styleUrls: ['./landing.scss']
 })
 export class Landing {
 
   constructor(
-    private readonly router: Router
+    private readonly router: Router,
+    readonly ui: UiPreferencesService
   ) { }
 
 
   onSubmit(fragment?: string): void {
-    this.router.navigate(['/submit'], {fragment: fragment});
+    this.router.navigate(['/submit'], { fragment: fragment });
+  }
+
+  openExternal(url: string): void {
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
 }

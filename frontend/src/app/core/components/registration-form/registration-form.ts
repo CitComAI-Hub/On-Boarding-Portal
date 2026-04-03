@@ -14,6 +14,7 @@ import { NotificationService } from '../../services/notification';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { ServerConfigService } from '../../services/server-config';
 import { MatTooltip } from "@angular/material/tooltip";
+import { UiPreferencesService } from '../../services/ui-preferences';
 
 @Component({
   selector: 'app-registration-form',
@@ -35,7 +36,7 @@ import { MatTooltip } from "@angular/material/tooltip";
     UploadFile,
     CopyInput,
     MatTooltip
-],
+  ],
   templateUrl: './registration-form.html',
   styleUrl: './registration-form.scss',
 })
@@ -53,7 +54,8 @@ export class RegistrationForm {
     private fb: FormBuilder,
     private onBoardingService: OnBoardingService,
     private notification: NotificationService,
-    config: ServerConfigService
+    config: ServerConfigService,
+    readonly ui: UiPreferencesService,
   ) {
     this.pdfDocumentUrl = config.getProperty('documentToSignUrl');
     this.contactForm = this.fb.group({
@@ -103,7 +105,7 @@ export class RegistrationForm {
         },
         error: (err) => {
           this.isProcessing.set(false);
-          this.notification.error('Error submitting the application');
+          this.notification.error(this.ui.t('form.submitError'));
           console.error('Submission Error:', err);
         }
       });

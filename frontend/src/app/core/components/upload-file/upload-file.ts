@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificationService } from '../../services/notification';
+import { UiPreferencesService } from '../../services/ui-preferences';
 
 @Component({
   selector: 'app-upload-file',
@@ -14,7 +15,7 @@ import { NotificationService } from '../../services/notification';
   styleUrl: './upload-file.scss',
 })
 export class UploadFile {
-  @Input() label: string = 'Seleccionar documentos';
+  @Input() label: string = '';
   @Input() accept: string = 'application/pdf';
   @Input() multiple: boolean = true;
   @Input() maxFileSizeMB: number = 5;
@@ -23,7 +24,12 @@ export class UploadFile {
 
   selectedFiles: File[] = [];
 
-  constructor(private notification: NotificationService) { }
+  constructor(
+    private notification: NotificationService,
+    readonly ui: UiPreferencesService,
+  ) {
+    this.label = this.ui.t('form.signedAgreement');
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -35,8 +41,10 @@ export class UploadFile {
       const isValidType = this.accept.includes(file.type) || this.accept.includes(file.name.split('.').pop() || '');
       const isValidSize = file.size <= this.maxFileSizeMB * 1024 * 1024;
 
-      if (!isValidType) this.notification.error(`El archivo ${file.name} no tiene un tipo valido.`);
-      if (!isValidSize) this.notification.error(`El archivo ${file.name} supera ${this.maxFileSizeMB}MB.`);
+      if (!isValidType) this.notification.error(this.ui.replace('upload.invalidType', { name: file.name }));
+      if (!isValidSize) {
+        this.notification.error(this.ui.replace('upload.invalidSize', { name: file.name, size: this.maxFileSizeMB }));
+      }
 
       return isValidType && isValidSize;
     });
@@ -62,7 +70,7 @@ export class UploadFile {
     const newWindow = window.open(blobUrl, '_blank');
 
     if (!newWindow) {
-      this.notification.info('Permite las ventanas emergentes para previsualizar el PDF');
+      this.notification.info(this.ui.t('upload.allowPopups'));
     }
   }
 

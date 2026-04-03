@@ -3,28 +3,39 @@
   <section class="hero-bg">
     <div class="container">
       <mat-card class="main-card surface-card animate-fade-in">
-        <mat-card-content>
-          <div class="hero-layout">
-            <div class="text-content">
-              <p class="eyebrow">Espacio de Datos · Onboarding de entidades</p>
-              <h1 class="title">Impulsa la confianza en tu<br>ecosistema de datos</h1>
-              <p class="subtitle">
-                Portal para incorporar organizaciones de forma segura, validando identidad digital y criterios
-                de gobernanza antes de operar dentro del espacio de datos.
-              </p>
+        <mat-card-content class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">{{ ui.t('landing.eyebrow') }}</p>
+            <h1 class="title">{{ ui.t('landing.title') }}</h1>
+            <p class="subtitle">{{ ui.t('landing.subtitle') }}</p>
 
-              <div class="action-row">
-                <button matFab extended class="primary-action" (click)="onSubmit()">
-                  <mat-icon>add_business</mat-icon>
-                  INICIAR PROCESO DE ONBOARDING
-                </button>
-                <button matFab extended class="secondary-action" (click)="onSubmit('search')">
-                  <mat-icon>search</mat-icon>
-                  CONSULTAR ESTADO DE SOLICITUD
-                </button>
-              </div>
+            <div class="action-row">
+              <button matFab extended class="primary-action" (click)="onSubmit()">
+                <mat-icon>add_business</mat-icon>
+                {{ ui.t('landing.ctaStart') }}
+              </button>
+              <button matFab extended class="secondary-action" (click)="onSubmit('search')">
+                <mat-icon>search</mat-icon>
+                {{ ui.t('landing.ctaStatus') }}
+              </button>
+            </div>
+
+            <div class="external-row">
+              <button mat-stroked-button type="button" (click)="openExternal(ui.projectWebsiteUrl)">
+                <mat-icon>language</mat-icon>
+                {{ ui.t('landing.ctaProject') }}
+              </button>
+              <button mat-stroked-button type="button" (click)="openExternal(ui.marketplaceUrl)">
+                <mat-icon>storefront</mat-icon>
+                {{ ui.t('landing.ctaMarketplace') }}
+              </button>
             </div>
           </div>
+
+          <figure class="hero-media">
+            <img src="https://citcomtef.eu/wp-content/uploads/2025/11/demo-6.webp" alt="Smart city innovation" />
+            <figcaption>{{ ui.t('landing.mediaCaption') }}</figcaption>
+          </figure>
         </mat-card-content>
       </mat-card>
     </div>
@@ -35,47 +46,62 @@
       <mat-card class="feature-card span-4" appearance="outlined">
         <mat-card-header>
           <div mat-card-avatar class="icon-box"><mat-icon>fingerprint</mat-icon></div>
-          <mat-card-title>Identidad Digital</mat-card-title>
+          <mat-card-title>{{ ui.t('landing.pillarTrust') }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>Vincula la identidad legal de tu organización con identificadores descentralizados (DID).
-          </p>
+          <p>{{ ui.t('landing.pillarTrustDesc') }}</p>
         </mat-card-content>
       </mat-card>
 
       <mat-card class="feature-card span-4" appearance="outlined">
         <mat-card-header>
           <div mat-card-avatar class="icon-box"><mat-icon>workspace_premium</mat-icon></div>
-          <mat-card-title>Marco de Confianza</mat-card-title>
+          <mat-card-title>{{ ui.t('landing.pillarCompliance') }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>El proceso validado garantiza el cumplimiento de las reglas de gobernanza del espacio de datos.
-          </p>
+          <p>{{ ui.t('landing.pillarComplianceDesc') }}</p>
         </mat-card-content>
       </mat-card>
 
       <mat-card class="feature-card span-4" appearance="outlined">
         <mat-card-header>
           <div mat-card-avatar class="icon-box"><mat-icon>account_balance_wallet</mat-icon></div>
-          <mat-card-title>Listo para Operar</mat-card-title>
+          <mat-card-title>{{ ui.t('landing.pillarBusiness') }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>Una vez aprobada, tu entidad podrá participar e interoperar con otros miembros del ecosistema.</p>
+          <p>{{ ui.t('landing.pillarBusinessDesc') }}</p>
         </mat-card-content>
       </mat-card>
     </div>
   </section>
 
-  <section class="ecosystem-strip">
-    <div class="container strip-content">
-      <div class="logo-row">
-        <img src="/logo-citcom.png" alt="CitCom" onerror="this.onerror=null;this.style.display='none';" />
+  <section class="impact-section">
+    <div class="container impact-grid">
+      <mat-card class="impact-copy surface-card">
+        <h2>{{ ui.t('landing.storyTitle') }}</h2>
+        <p>{{ ui.t('landing.storyBody') }}</p>
+
+        <ul>
+          <li>{{ ui.t('landing.storyPoint1') }}</li>
+          <li>{{ ui.t('landing.storyPoint2') }}</li>
+          <li>{{ ui.t('landing.storyPoint3') }}</li>
+        </ul>
+      </mat-card>
+
+      <div class="stats-grid">
+        <mat-card class="stat-card surface-card">
+          <span>{{ ui.t('landing.statsParticipants') }}</span>
+          <strong>{{ ui.t('landing.statsParticipantsValue') }}</strong>
+        </mat-card>
+        <mat-card class="stat-card surface-card">
+          <span>{{ ui.t('landing.statsNodes') }}</span>
+          <strong>{{ ui.t('landing.statsNodesValue') }}</strong>
+        </mat-card>
+        <mat-card class="stat-card surface-card">
+          <span>{{ ui.t('landing.statsTime') }}</span>
+          <strong>{{ ui.t('landing.statsTimeValue') }}</strong>
+        </mat-card>
       </div>
-      <h2>Red europea de innovación y cumplimiento</h2>
-      <p>
-        Inspirado en la línea visual y narrativa de CitCom.ai: enfoque en validación real, despliegue responsable
-        y colaboración entre entidades públicas, tecnológicas y de investigación.
-      </p>
     </div>
   </section>
 </main>
