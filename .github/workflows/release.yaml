@@ -16,6 +16,7 @@ concurrency:
 env:
   REGISTRY: ghcr.io
   PLATFORMS: linux/amd64,linux/arm64
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   release:
@@ -40,8 +41,8 @@ jobs:
         run: |
           TAG_NAME="${GITHUB_REF_NAME}"
           APP_VERSION="${TAG_NAME#onboarding-citcom-}"
-          IMAGE_NAME="${GITHUB_REPOSITORY,,}"
           OWNER_LC="${GITHUB_REPOSITORY_OWNER,,}"
+          IMAGE_NAME="${OWNER_LC}/onboarding-citcom"
 
           if [[ "${APP_VERSION}" =~ ^[0-9]+\.[0-9]+$ ]]; then
             CHART_VERSION="${APP_VERSION}.0"
@@ -85,7 +86,7 @@ jobs:
       - name: Prepare Helm chart release values
         run: |
           sed -i "s/^version: .*/version: ${CHART_VERSION}/" chart/Chart.yaml
-          sed -i "s/^appVersion: .*/appVersion: ${APP_VERSION}/" chart/Chart.yaml
+          sed -i "s/^appVersion: .*/appVersion: \"${APP_VERSION}\"/" chart/Chart.yaml
           sed -i "s|^[[:space:]]*repository: .*|  repository: ${REGISTRY}/${IMAGE_NAME}|" chart/values.yaml
           sed -i "s|^[[:space:]]*tag: .*|  tag: \"${TAG_NAME}\"|" chart/values.yaml
         env:
@@ -96,10 +97,12 @@ jobs:
           IMAGE_NAME: ${{ steps.versions.outputs.image_name }}
 
       - name: Lint and package Helm chart
+        id: helm_package
         run: |
           helm lint chart
           mkdir -p dist
-          helm package chart --destination dist
+          PKG_FILE=$(helm package chart --destination dist | awk '{print $NF}')
+          echo "package_file=${PKG_FILE}" >> "$GITHUB_OUTPUT"
 
       - name: Login to GHCR for Helm OCI
         run: |
@@ -109,7 +112,7 @@ jobs:
 
       - name: Push Helm chart to GHCR OCI
         run: |
-          helm push "dist/onboarding-portal-${CHART_VERSION}.tgz" "oci://ghcr.io/${OWNER}/helm"
+          helm push "${PACKAGE_FILE}" "oci://ghcr.io/${OWNER}/helm"
         env:
-          CHART_VERSION: ${{ steps.versions.outputs.chart_version }}
+          PACKAGE_FILE: ${{ steps.helm_package.outputs.package_file }}
           OWNER: ${{ steps.versions.outputs.owner_lc }}
