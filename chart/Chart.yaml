@@ -2,8 +2,8 @@ apiVersion: v2
 name: onboarding-citcom
 description: A Helm chart for the OnBoarding Portal to CitCom.ai project
 type: application
-version: 0.1.0
-appVersion: 0.1.0
+version: 0.1.3
+appVersion: 0.1.3
 maintainers:
   - name: "Sergio Marti"
     email: "sermars7@upv.es"

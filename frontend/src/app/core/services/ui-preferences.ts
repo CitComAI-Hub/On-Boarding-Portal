@@ -71,7 +71,7 @@ export class UiPreferencesService {
             'landing.statsNodes': 'Ecosystem Nodes',
             'landing.statsNodesValue': 'EU-wide',
             'landing.statsTime': 'Onboarding Time',
-            'landing.statsTimeValue': '< 10 min',
+            'landing.statsTimeValue': '< 5 min',
 
             'landing.mediaCaption': 'Image source: CitCom.ai project materials',
 
@@ -226,7 +226,7 @@ export class UiPreferencesService {
             'landing.statsNodes': 'Nodos del ecosistema',
             'landing.statsNodesValue': 'UE',
             'landing.statsTime': 'Tiempo de onboarding',
-            'landing.statsTimeValue': '< 10 min',
+            'landing.statsTimeValue': '< 5 min',
 
             'landing.mediaCaption': 'Fuente imagen: materiales del proyecto CitCom.ai',
 
