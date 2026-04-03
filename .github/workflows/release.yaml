@@ -15,7 +15,6 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
   PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
@@ -41,6 +40,8 @@ jobs:
         run: |
           TAG_NAME="${GITHUB_REF_NAME}"
           APP_VERSION="${TAG_NAME#onboarding-citcom-}"
+          IMAGE_NAME="${GITHUB_REPOSITORY,,}"
+          OWNER_LC="${GITHUB_REPOSITORY_OWNER,,}"
 
           if [[ "${APP_VERSION}" =~ ^[0-9]+\.[0-9]+$ ]]; then
             CHART_VERSION="${APP_VERSION}.0"
@@ -51,6 +52,8 @@ jobs:
           echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
           echo "app_version=${APP_VERSION}" >> "$GITHUB_OUTPUT"
           echo "chart_version=${CHART_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "image_name=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
+          echo "owner_lc=${OWNER_LC}" >> "$GITHUB_OUTPUT"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -73,8 +76,8 @@ jobs:
           push: true
           platforms: ${{ env.PLATFORMS }}
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.versions.outputs.tag_name }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.versions.outputs.app_version }}
+            ${{ env.REGISTRY }}/${{ steps.versions.outputs.image_name }}:${{ steps.versions.outputs.tag_name }}
+            ${{ env.REGISTRY }}/${{ steps.versions.outputs.image_name }}:${{ steps.versions.outputs.app_version }}
 
       - name: Setup Helm
         uses: azure/setup-helm@v4
@@ -90,7 +93,7 @@ jobs:
           APP_VERSION: ${{ steps.versions.outputs.app_version }}
           CHART_VERSION: ${{ steps.versions.outputs.chart_version }}
           REGISTRY: ${{ env.REGISTRY }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_NAME: ${{ steps.versions.outputs.image_name }}
 
       - name: Lint and package Helm chart
         run: |
@@ -109,4 +112,4 @@ jobs:
           helm push "dist/onboarding-portal-${CHART_VERSION}.tgz" "oci://ghcr.io/${OWNER}/helm"
         env:
           CHART_VERSION: ${{ steps.versions.outputs.chart_version }}
-          OWNER: ${{ github.repository_owner }}
+          OWNER: ${{ steps.versions.outputs.owner_lc }}
