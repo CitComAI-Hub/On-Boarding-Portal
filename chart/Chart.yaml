@@ -5,8 +5,8 @@ type: application
 version: 0.1.0
 appVersion: 0.1.0
 maintainers:
-  - name: "Miguel Ortega"
-    email: "migue.orega@seamware.com"
+  - name: "Sergio Marti"
+    email: "sermars7@upv.es"
 keywords:
   - onboarding
   - portal
