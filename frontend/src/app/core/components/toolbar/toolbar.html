@@ -14,9 +14,10 @@
         <div class="toolbar-actions">
             @if(showAdminLogin || showUserMenu) {
             @if(showAdminLogin) {
-            <button mat-button class="nav-link" (click)="onAdminLogin()">
+            <button mat-button class="nav-link admin-button" [attr.aria-label]="ui.t('toolbar.admin')"
+                (click)="onAdminLogin()">
                 <mat-icon>lock_open</mat-icon>
-                {{ ui.t('toolbar.admin') }}
+                <span class="admin-label">{{ ui.t('toolbar.admin') }}</span>
             </button>
             }
             @if(showUserMenu && user) {
