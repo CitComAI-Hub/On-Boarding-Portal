@@ -9,6 +9,7 @@ database:
   logging: false
 
 app:
+  browserTitle: "${APP_BROWSER_TITLE}"
   documentToSignUrl: "https://example.com/documento-a-firmar.pdf"
   projectWebsiteUrl: "https://citcomtef.eu/"
   marketplaceUrl: "https://marketplace.example.com/"

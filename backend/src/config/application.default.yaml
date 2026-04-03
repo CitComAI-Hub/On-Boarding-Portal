@@ -31,7 +31,8 @@ database:
   synchronize: true
   logging: false
 app:
-  projectWebsiteUrl: "https://citcomtef.eu/"
+  browserTitle: "Onboarding Portal"
+  projectWebsiteUrl: "https://project.example.com/"
   marketplaceUrl: "https://marketplace.example.com/"
   login:
     openIdUrl: ""

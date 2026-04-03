@@ -27,6 +27,7 @@ export interface AppCfg {
     login: LoginConfig;
     tir: TirConfig;
     keycloak: KeycloakConfig;
+    browserTitle: string;
     documentToSignUrl: string;
     projectWebsiteUrl: string;
     marketplaceUrl: string;

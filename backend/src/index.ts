@@ -67,6 +67,7 @@ appServer.use((_req, res) => {
 (async () => {
   try {
     renderedIndex = await ejs.renderFile(indexPath, {
+      browserTitle: app.browserTitle,
       documentToSignUrl: app.documentToSignUrl,
       projectWebsiteUrl: app.projectWebsiteUrl,
       marketplaceUrl: app.marketplaceUrl,

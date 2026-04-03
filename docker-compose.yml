@@ -24,6 +24,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    environment:
+      APP_BROWSER_TITLE: ${APP_BROWSER_TITLE:-CitCom.ai Onboarding DS}
     ports:
       - "8080:8080"
     volumes:
