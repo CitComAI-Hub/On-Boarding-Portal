@@ -23,7 +23,6 @@ import { UiPreferencesService } from '../../services/ui-preferences';
 export class Toolbar {
 
   @Input() showAdminLogin = true;
-  @Input() showOnBoarding = true;
   @Input() showUserMenu = false;
   user: any;
   constructor(
@@ -44,10 +43,6 @@ export class Toolbar {
     } else {
       this.authService.login();
     }
-  }
-
-  onSubmit(): void {
-    this.router.navigate(['/submit']);
   }
 
   goAdminDashboard() {
