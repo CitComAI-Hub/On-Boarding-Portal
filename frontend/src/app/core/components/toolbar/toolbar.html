@@ -49,9 +49,11 @@
                 </button>
             </mat-menu>
 
+            @if(ui.enableThemeToggle) {
             <button mat-icon-button type="button" [attr.aria-label]="ui.t('toolbar.theme')" (click)="ui.toggleTheme()">
                 <mat-icon>{{ ui.theme() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
             </button>
+            }
         </div>
     </div>
 </mat-toolbar>

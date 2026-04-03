@@ -32,6 +32,7 @@ database:
   logging: false
 app:
   browserTitle: "Onboarding Portal"
+  enableThemeToggle: true
   projectWebsiteUrl: "https://project.example.com/"
   marketplaceUrl: "https://marketplace.example.com/"
   login:

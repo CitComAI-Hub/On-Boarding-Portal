@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { getMetadata } from '../../../environments/metadata.service';
+import { getMetadata, getMetadataAsBoolean } from '../../../environments/metadata.service';
 
 type ThemeMode = 'light' | 'dark';
 type Language = 'en' | 'es';
@@ -21,6 +21,7 @@ export class UiPreferencesService {
     readonly marketplaceUrl =
         getMetadata<string>('marketplaceUrl', 'https://marketplace.example.com/') ||
         'https://marketplace.example.com/';
+    readonly enableThemeToggle = getMetadataAsBoolean('enableThemeToggle', true) ?? true;
 
     readonly theme = this.currentTheme.asReadonly();
     readonly language = this.currentLanguage.asReadonly();

@@ -28,6 +28,7 @@ export interface AppCfg {
     tir: TirConfig;
     keycloak: KeycloakConfig;
     browserTitle: string;
+    enableThemeToggle: boolean;
     documentToSignUrl: string;
     projectWebsiteUrl: string;
     marketplaceUrl: string;

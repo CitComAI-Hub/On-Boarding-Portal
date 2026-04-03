@@ -26,6 +26,7 @@ services:
         condition: service_healthy
     environment:
       APP_BROWSER_TITLE: ${APP_BROWSER_TITLE:-CitCom.ai Onboarding DS}
+      APP_ENABLE_THEME_TOGGLE: ${APP_ENABLE_THEME_TOGGLE:-false}
     ports:
       - "8080:8080"
     volumes:
