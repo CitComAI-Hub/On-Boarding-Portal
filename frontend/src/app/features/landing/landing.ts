@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { Toolbar } from "../../core/components/toolbar/toolbar";
 import { UiPreferencesService } from '../../core/services/ui-preferences';
+import { SiteFooter } from '../../core/components/site-footer/site-footer';
 
 @Component({
   selector: 'app-landing',
@@ -19,7 +20,8 @@ import { UiPreferencesService } from '../../core/services/ui-preferences';
     MatIconModule,
     MatCardModule,
     MatDividerModule,
-    Toolbar
+    Toolbar,
+    SiteFooter
   ],
   templateUrl: './landing.html',
   styleUrls: ['./landing.scss']

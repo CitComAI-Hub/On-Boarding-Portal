@@ -1,0 +1,40 @@
+<footer class="site-footer">
+    <div class="container footer-top">
+        <div class="footer-brand-block">
+            <img [src]="ui.theme() === 'dark' ? '/logo-citcom-white.png' : '/logo-citcom.png'"
+                [class.dark-logo-fallback]="ui.theme() === 'dark'" alt="CitCom" width="220" height="52"
+                onerror="this.src='/logo-citcom.png';" />
+
+            <div class="eu-note">
+                <strong>{{ ui.t('footer.euTitle') }}</strong>
+                <p>{{ ui.t('footer.euText') }}</p>
+            </div>
+        </div>
+
+        <nav class="footer-links" aria-label="Footer links">
+            <a href="/submit">{{ ui.t('landing.ctaStart') }}</a>
+            <a href="/submit#search">{{ ui.t('landing.ctaStatus') }}</a>
+            <a href="/admin">{{ ui.t('toolbar.admin') }}</a>
+            <button type="button" class="footer-link-btn" (click)="openExternal(ui.projectWebsiteUrl)">
+                {{ ui.t('landing.ctaProject') }}
+            </button>
+            <button type="button" class="footer-link-btn" (click)="openExternal(ui.marketplaceUrl)">
+                {{ ui.t('landing.ctaMarketplace') }}
+            </button>
+        </nav>
+
+        <nav class="footer-social" aria-label="Social links">
+            <a href="https://www.linkedin.com/company/tef-citcom-smart-cities-and-communities/" target="_blank"
+                rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://citcomai-hub.github.io/" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <div class="container footer-bottom">
+        <div class="copyright">
+            <p>{{ ui.t('footer.rights') }} {{ year }}</p>
+        </div>
+    </div>
+</footer>

@@ -74,6 +74,19 @@ export class UiPreferencesService {
 
             'landing.mediaCaption': 'Image source: CitCom.ai project materials',
 
+            'footer.euTitle': 'Co-funded by the European Union',
+            'footer.euText':
+                'Views and opinions expressed are those of the author(s) only and do not necessarily reflect those of the European Union. Neither the European Union nor the granting authority can be held responsible for them.',
+            'footer.services': 'Services',
+            'footer.news': 'News & Publications',
+            'footer.contact': 'Contact',
+            'footer.about': 'About',
+            'footer.events': 'Events',
+            'footer.customerService': 'Customer Service',
+            'footer.address': 'Address',
+            'footer.phone': 'Phone',
+            'footer.rights': 'All rights reserved.',
+
             'submit.tabRegister': 'Register Entity',
             'submit.tabTrack': 'Track Progress',
             'submit.resumeTitle': 'Resume onboarding',
@@ -215,6 +228,19 @@ export class UiPreferencesService {
             'landing.statsTimeValue': '< 10 min',
 
             'landing.mediaCaption': 'Fuente imagen: materiales del proyecto CitCom.ai',
+
+            'footer.euTitle': 'Cofinanciado por la Unión Europea',
+            'footer.euText':
+                'Los puntos de vista y opiniones expresados son únicamente los de sus autores y no reflejan necesariamente los de la Unión Europea. Ni la Unión Europea ni la autoridad concedente pueden considerarse responsables.',
+            'footer.services': 'Servicios',
+            'footer.news': 'Noticias y publicaciones',
+            'footer.contact': 'Contacto',
+            'footer.about': 'Sobre nosotros',
+            'footer.events': 'Eventos',
+            'footer.customerService': 'Atención al cliente',
+            'footer.address': 'Dirección',
+            'footer.phone': 'Teléfono',
+            'footer.rights': 'Todos los derechos reservados.',
 
             'submit.tabRegister': 'Registrar Entidad',
             'submit.tabTrack': 'Seguimiento',
