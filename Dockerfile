@@ -20,7 +20,25 @@ RUN pnpm exec tsc
 RUN pnpm prune --prod
 
 # ----------------------------
-# Stage 2: Final image
+# Stage 2: Build frontend
+# ----------------------------
+FROM node:22-alpine AS frontend-build
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+WORKDIR /app/frontend
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+COPY frontend/ ./
+RUN pnpm build
+
+# ----------------------------
+# Stage 3: Final image
 # ----------------------------
 FROM node:22-slim
 
@@ -32,7 +50,7 @@ COPY --from=backend-build /app/backend/dist ./
 COPY --from=backend-build /app/backend/node_modules ./node_modules
 
 # Copy static frontend
-COPY ./frontend/dist/browser ./static
+COPY --from=frontend-build /app/frontend/dist/onboarding/browser ./static
 
 # Copy config
 COPY ./backend/src/config/application.default.yaml /app/application.default.yaml

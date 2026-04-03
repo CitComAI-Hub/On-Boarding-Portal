@@ -1,0 +1,21 @@
+database:
+  type: postgres
+  host: db
+  port: 5432
+  username: onboarding
+  password: onboarding
+  database: onboarding
+  synchronize: true
+  logging: false
+
+app:
+  documentToSignUrl: "https://example.com/documento-a-firmar.pdf"
+  tir:
+    url: "https://example.com/issuer"
+  login:
+    openIdUrl: "https://example.com"
+    clientId: "local-dev"
+    clientSecret: ""
+
+email:
+  enabled: false

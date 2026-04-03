@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: onboarding-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: onboarding
+      POSTGRES_PASSWORD: onboarding
+      POSTGRES_DB: onboarding
+    volumes:
+      - onboarding_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U onboarding -d onboarding"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: onboarding-portal
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./local/config:/app/config:ro
+      - onboarding_files_data:/app/files
+
+volumes:
+  onboarding_postgres_data:
+  onboarding_files_data:
