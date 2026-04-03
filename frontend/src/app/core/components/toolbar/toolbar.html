@@ -3,7 +3,7 @@
         <div class="brand" (click)="goLanding()">
             <img [src]="ui.theme() === 'dark' ? '/logo-citcom-white.png' : '/logo-citcom.png'"
                 [class.dark-logo-fallback]="ui.theme() === 'dark'" width="170" height="40" alt="CitCom"
-                onerror="this.onerror=null;this.src='/logo-citcom.png';" />
+                onerror="this.src='/logo-citcom.png';" />
             <div class="brand-text">
                 <strong>{{ ui.t('toolbar.portal') }}</strong>
                 <span>{{ ui.t('toolbar.space') }}</span>
