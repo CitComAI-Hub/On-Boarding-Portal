@@ -1,42 +1,41 @@
-$main-bg-color: #f9f9f9;
 .detail-container {
-    padding: 16px;
-    background: $main-bg-color;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    .detail-header {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-        margin-bottom: 24px;
-    }
+  padding: 16px;
+  background: var(--app-surface-soft);
+  border-radius: 12px;
+  border: 1px solid var(--app-border);
+
+  .detail-header {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-bottom: 24px;
+  }
 }
 
 mat-chip {
 
-    &[status="pending"],
-    &[status="submitted"] {
-        --mat-chip-elevated-disabled-container-color: #eff6ff;
-    }
+  &[status="pending"],
+  &[status="submitted"] {
+    --mat-chip-elevated-disabled-container-color: var(--app-status-pending-bg);
+  }
 
-    &[status="under_review"] {
-        --mat-chip-elevated-disabled-container-color: #fffbeb;
-        color: #b45309;
-    }
+  &[status="under_review"] {
+    --mat-chip-elevated-disabled-container-color: var(--app-status-under-review-bg);
+    color: var(--app-status-under-review-text);
+  }
 
-    &[status="action_required"],
-    &[status="rejected"]
-     {
-        --mat-chip-elevated-disabled-container-color: #fef2f2;
-        --mat-chip-disabled-label-text-color: #b91c1c;
-        border: 1px solid #fee2e2;
-    }
+  &[status="action_required"],
+  &[status="rejected"] {
+    --mat-chip-elevated-disabled-container-color: var(--app-status-rejected-bg);
+    --mat-chip-disabled-label-text-color: var(--app-status-rejected-text);
+    border: 1px solid var(--app-status-rejected-border);
+  }
 
-    &[status="active"] {
-        --mat-chip-elevated-disabled-container-color: #f0fdf4;
-        --mat-chip-disabled-label-text-color: #15803d;
-        border: 1px solid #dcfce7;
-    }
+  &[status="active"] {
+    --mat-chip-elevated-disabled-container-color: var(--app-status-active-bg);
+    --mat-chip-disabled-label-text-color: var(--app-status-active-text);
+    border: 1px solid var(--app-status-active-border);
+  }
 }
 
 
@@ -45,6 +44,7 @@ mat-chip {
   justify-content: flex-end;
   margin-top: 20px;
   gap: 1rem;
+
   button {
     min-width: 120px;
 
@@ -66,15 +66,16 @@ mat-chip {
 
 // upload files
 .files-container {
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--app-border-subtle);
   border-radius: 6px;
   box-sizing: border-box;
   padding: 0 18px 15px 18px;
+
   .section-label {
     position: relative;
     top: -10px;
     left: -30px;
-    background-color: $main-bg-color;
+    background-color: var(--app-surface-soft);
     display: inline-block;
     padding: 0px 6px;
     box-sizing: border-box;
@@ -98,13 +99,13 @@ mat-chip {
     max-width: 300px;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1) !important;
+      background-color: var(--app-overlay-soft) !important;
       transform: translateY(-1px);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--app-shadow-soft);
     }
 
     mat-icon {
-      color: #d32f2f;
+      color: var(--app-danger);
     }
 
     .truncate {

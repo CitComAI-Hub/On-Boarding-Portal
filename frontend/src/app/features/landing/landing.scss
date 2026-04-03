@@ -77,17 +77,30 @@
   justify-content: center;
   gap: 16px;
 
-  button[matFab] {
-    --mdc-fab-extended-container-color: var(--app-primary);
-    --mdc-fab-extended-label-text-color: #fff;
+  .mat-mdc-extended-fab {
     font-weight: 700;
     border-radius: 999px;
+    border: 1px solid transparent;
+    box-shadow: var(--app-shadow-soft);
   }
 
-  button[matFab]:last-child {
-    --mdc-fab-extended-container-color: #fff;
-    --mdc-fab-extended-label-text-color: var(--app-primary);
+  .primary-action {
+    background-color: var(--app-primary) !important;
+    color: var(--app-text-on-dark) !important;
+
+    mat-icon {
+      color: var(--app-text-on-dark) !important;
+    }
+  }
+
+  .secondary-action {
+    background-color: var(--app-white) !important;
+    color: var(--app-primary) !important;
     border: 1px solid var(--app-border);
+
+    mat-icon {
+      color: var(--app-primary) !important;
+    }
   }
 }
 
@@ -96,7 +109,7 @@
 
   .strip-content {
     background: linear-gradient(110deg, var(--app-primary) 0%, var(--app-primary-strong) 75%);
-    color: #fff;
+    color: var(--app-text-on-dark);
     padding: 26px;
     border-radius: 18px;
   }
