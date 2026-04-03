@@ -1,51 +1,56 @@
-name: Release
+name: Release By Tag
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "onboarding-citcom-*"
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
 
 env:
-  REGISTRY: ${{ vars.REGISTRY || 'quay.io' }}
-  REPOSITORY: ${{ vars.REPOSITORY || 'seamware' }}
-  PLATFORMS : linux/arm64,linux/amd64
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PLATFORMS: linux/amd64,linux/arm64
+
 jobs:
-  generate-version:
-    runs-on: ubuntu-latest
-
-    outputs:
-      version: ${{ steps.out.outputs.version }}
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - id: pr
-        uses: actions-ecosystem/action-get-merged-pull-request@v1.0.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: zwaldowski/semver-release-action@v6
-        if: steps.pr.outputs.labels
-        with:
-          dry_run: true
-          bump: ${{ steps.pr.outputs.labels }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set version output
-        id: out
-        run: echo "version=${VERSION:-latest}" >> $GITHUB_OUTPUT
-
-  # image build&push
-  build-and-push:
-    needs: [ "generate-version" ]
+  release:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
-
-      - uses: pnpm/action-setup@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          version: 10
+          fetch-depth: 0
+
+      - name: Validate tag comes from master
+        run: |
+          git fetch origin master
+          if ! git merge-base --is-ancestor "${GITHUB_SHA}" "origin/master"; then
+            echo "Tag ${GITHUB_REF_NAME} does not point to a commit in master. Release aborted."
+            exit 1
+          fi
+
+      - name: Derive release versions
+        id: versions
+        run: |
+          TAG_NAME="${GITHUB_REF_NAME}"
+          APP_VERSION="${TAG_NAME#onboarding-citcom-}"
+
+          if [[ "${APP_VERSION}" =~ ^[0-9]+\.[0-9]+$ ]]; then
+            CHART_VERSION="${APP_VERSION}.0"
+          else
+            CHART_VERSION="${APP_VERSION}"
+          fi
+
+          echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
+          echo "app_version=${APP_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "chart_version=${CHART_VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -53,30 +58,55 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to registry
+      - name: Login to GHCR for Docker
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_PASSWORD }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build&Push image
-        run: ./.github/scripts/build.sh --platform ${{ env.PLATFORMS }} -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/onboarding:latest -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/onboarding:${{ needs.generate-version.outputs.version }} --push .
-
-  git-release:
-    needs: ["generate-version", "build-and-push"]
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - uses: actions/checkout@v6
-
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        if: needs.generate-version.outputs.version != 'latest'
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ needs.generate-version.outputs.version }}
-          prerelease: false
-          title: ${{ needs.generate-version.outputs.version }}
-          files: |
-            LICENSE
+          context: .
+          file: ./Dockerfile
+          push: true
+          platforms: ${{ env.PLATFORMS }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.versions.outputs.tag_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.versions.outputs.app_version }}
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+
+      - name: Prepare Helm chart release values
+        run: |
+          sed -i "s/^version: .*/version: ${CHART_VERSION}/" chart/Chart.yaml
+          sed -i "s/^appVersion: .*/appVersion: ${APP_VERSION}/" chart/Chart.yaml
+          sed -i "s|^[[:space:]]*repository: .*|  repository: ${REGISTRY}/${IMAGE_NAME}|" chart/values.yaml
+          sed -i "s|^[[:space:]]*tag: .*|  tag: \"${TAG_NAME}\"|" chart/values.yaml
+        env:
+          TAG_NAME: ${{ steps.versions.outputs.tag_name }}
+          APP_VERSION: ${{ steps.versions.outputs.app_version }}
+          CHART_VERSION: ${{ steps.versions.outputs.chart_version }}
+          REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+
+      - name: Lint and package Helm chart
+        run: |
+          helm lint chart
+          mkdir -p dist
+          helm package chart --destination dist
+
+      - name: Login to GHCR for Helm OCI
+        run: |
+          echo "${GITHUB_TOKEN}" | helm registry login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Helm chart to GHCR OCI
+        run: |
+          helm push "dist/onboarding-portal-${CHART_VERSION}.tgz" "oci://ghcr.io/${OWNER}/helm"
+        env:
+          CHART_VERSION: ${{ steps.versions.outputs.chart_version }}
+          OWNER: ${{ github.repository_owner }}

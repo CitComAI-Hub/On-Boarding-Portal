@@ -114,18 +114,18 @@ extraEnvVars: []
 
 secrets:
   database:
-    secretName: ''
-    usernameKey: ''
-    passwordKey: ''
+    secretName: ""
+    usernameKey: ""
+    passwordKey: ""
   login:
-    secretName: ''
-    clientIdKey: ''
-    clientSecretKey: ''
+    secretName: ""
+    clientIdKey: ""
+    clientSecretKey: ""
   keycloak:
     create: false
-    secretName: ''
-    usernameKey: ''
-    passwordKey: ''
+    secretName: ""
+    usernameKey: ""
+    passwordKey: ""
 config:
   server:
     port: 8080
@@ -150,29 +150,31 @@ config:
   logging:
     level: info
   app:
-    documentToSignUrl: ''
+    browserTitle: "CitCom.ai Onboarding DS"
+    enableThemeToggle: true
+    documentToSignUrl: ""
     login:
-      openIdUrl: ''
+      openIdUrl: ""
       clientId: ${APP_CLIENT_ID}
       clientSecret: "${APP_CLIENT_SECRET}"
       scope: openid
       codeChallenge: true
     keycloak:
-      baseUrl: ''
+      baseUrl: ""
       auth:
         username: ${APP_KEYCLOAK_USERNAME}
         password: "${APP_KEYCLOAK_PASSWORD}"
         grantType: password
         clientId: "admin-cli"
     tir:
-      url: ''
+      url: ""
   database:
     type: postgres
-    host: ''
+    host: ""
     port: 5432
     username: ${APP_DB_USERNAME}
     password: ${APP_DB_PASSWORD}
-    database: ''
+    database: ""
     synchronize: true
     logging: false
   # -- Email configuration. See [nodemailer](https://nodemailer.com/usage)
