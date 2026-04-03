@@ -75,9 +75,9 @@ export class UiPreferencesService {
 
             'landing.mediaCaption': 'Image source: CitCom.ai project materials',
 
-            'footer.euTitle': 'Co-funded by the European Union',
+            'footer.euTitle': 'Co-funded by the European Union.',
             'footer.euText':
-                'Views and opinions expressed are those of the author(s) only and do not necessarily reflect those of the European Union. Neither the European Union nor the granting authority can be held responsible for them.',
+                'Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union. Neither the European Union nor the granting authority can be held responsible for them.',
             'footer.services': 'Services',
             'footer.news': 'News & Publications',
             'footer.contact': 'Contact',
@@ -230,9 +230,9 @@ export class UiPreferencesService {
 
             'landing.mediaCaption': 'Fuente imagen: materiales del proyecto CitCom.ai',
 
-            'footer.euTitle': 'Cofinanciado por la Unión Europea',
+            'footer.euTitle': 'Co-funded by the European Union.',
             'footer.euText':
-                'Los puntos de vista y opiniones expresados son únicamente los de sus autores y no reflejan necesariamente los de la Unión Europea. Ni la Unión Europea ni la autoridad concedente pueden considerarse responsables.',
+                'Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union. Neither the European Union nor the granting authority can be held responsible for them.',
             'footer.services': 'Servicios',
             'footer.news': 'Noticias y publicaciones',
             'footer.contact': 'Contacto',
