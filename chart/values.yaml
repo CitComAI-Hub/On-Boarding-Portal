@@ -162,6 +162,10 @@ config:
       scope: openid
       codeChallenge: true
     keycloak:
+      # -- Let the portal create and manage the DID (did:web) of each organization, so
+      # applicants can register without one. Requires a did-helper instance with Keycloak
+      # integration and `config.didGenerator.didWebHost`.
+      didCreationEnabled: false
       baseUrl: ""
       auth:
         username: ${APP_KEYCLOAK_USERNAME}
@@ -170,6 +174,10 @@ config:
         clientId: "admin-cli"
     tir:
       url: ""
+  # -- Base for generated DIDs when `config.app.keycloak.didCreationEnabled` is true:
+  # each provisioned realm gets `<didWebHost>:<realm>`, served by did-helper.
+  didGenerator:
+    didWebHost: ""  # e.g. did:web:did.example.com
   database:
     type: postgres
     host: ""

@@ -295,6 +295,10 @@ app:
   # logged and does not affect the others or the TIR registration. Each entry is
   # `{ url, credentials? }`; `credentials` defaults to an empty list (see README).
   til: []
+# Base for DIDs generated when `app.keycloak.didCreationEnabled` is true: each provisioned
+# realm gets `<didWebHost>:<realm>` (e.g. did:web:example.com:<realm>).
+didGenerator:
+  didWebHost: ""
 email:
   enabled: false
   type: "nodemailer"
