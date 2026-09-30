@@ -15,6 +15,8 @@ import { OnBoardingService } from '../../services/onboarding.service';
 import { conditionalValidator } from '../../validators/conditional-validator';
 import { MatDialog } from '@angular/material/dialog';
 import { PdfViewer } from '../pdf-viewer/pdf-viewer';
+import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatTabsModule } from '@angular/material/tabs';
 import { UiPreferencesService } from '../../services/ui-preferences';
@@ -50,6 +52,7 @@ export class AdminRegistrationDetails implements OnInit, OnDestroy {
     private onBoardingService: OnBoardingService,
     private dialog: MatDialog,
     readonly ui: UiPreferencesService,
+    private router: Router,
   ) {
     effect(() => {
       if (this.registrationForm) {
@@ -148,6 +151,30 @@ export class AdminRegistrationDetails implements OnInit, OnDestroy {
         this.notification.error(this.ui.t('pdf.invalid'));
       }
     })
+  }
+
+  deleteRegistration(): void {
+    this.dialog.open(ConfirmDialog, {
+      data: {
+        title: this.ui.t('dashboard.deleteTitle'),
+        message: this.ui.t('dashboard.deleteMessage').replace('{{email}}', this.registration().email),
+        confirmText: this.ui.t('dashboard.deleteConfirm'),
+        cancelText: this.ui.t('details.cancel'),
+      }
+    }).afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.onBoardingService.deleteAdminRegistration(this.registration().id).subscribe({
+          next: () => {
+            this.notification.info(this.ui.t('dashboard.deleteSuccess'));
+            this.router.navigate(['/admin']);
+          },
+          error: (error) => {
+            console.error("Error deleting registration", error);
+            this.notification.error(this.ui.t('dashboard.deleteError'))
+          }
+        });
+      }
+    });
   }
 
   prettyStatus(status: string) {

@@ -174,3 +174,10 @@ body {
 .mat-mdc-card {
   color: var(--app-ink);
 }
+
+button[color="warn"] {
+  --mat-sys-primary: var(--mat-sys-error);
+  --mat-sys-on-primary: var(--mat-sys-on-error);
+  --mat-sys-primary-container: var(--mat-sys-error-container);
+  --mat-sys-on-primary-container: var(--mat-sys-on-error-container);
+}

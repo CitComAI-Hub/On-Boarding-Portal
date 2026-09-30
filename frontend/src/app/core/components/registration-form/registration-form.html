@@ -70,7 +70,7 @@
                     <mat-label>{{ ui.t('form.did') }}</mat-label>
                     <input matInput formControlName="did" placeholder="did:web:domain.com">
                     <mat-icon matSuffix>fingerprint</mat-icon>
-                    <!-- <mat-hint>Empty field triggers automated DID generation.</mat-hint> -->
+                    <mat-hint>{{ ui.t('form.didHint') }}</mat-hint>
                     @if(contactForm.get('did')?.hasError('pattern')) {
                     <mat-error>
                         {{ ui.t('form.invalidDid') }}

@@ -46,6 +46,7 @@ export class RegistrationForm {
   registrationId?: string;
 
   pdfDocumentUrl: string;
+  didCreationEnabled: boolean;
   contactForm: FormGroup;
   orgForm: FormGroup;
   legalForm: FormGroup;
@@ -58,9 +59,16 @@ export class RegistrationForm {
     readonly ui: UiPreferencesService,
   ) {
     this.pdfDocumentUrl = config.getProperty('documentToSignUrl');
+    this.didCreationEnabled = config.getProperty('didCreationEnabled');
+
+    const didValidators = [Validators.pattern(/^did:[a-z0-9]+:[a-zA-Z0-9\.\-_%:]+$/)];
+    if (!this.didCreationEnabled) {
+      didValidators.push(Validators.required);
+    }
+
     this.contactForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      did: ['', [Validators.required, Validators.pattern(/^did:[a-z0-9]+:[a-zA-Z0-9\.\-_%:]+$/)]]
+      did: ['', didValidators]
     });
 
     this.orgForm = this.fb.group({

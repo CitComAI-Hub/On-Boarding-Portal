@@ -10,6 +10,9 @@ import { RegistrationStatus } from '../../../core/types/registration-status';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { UiPreferencesService } from '../../../core/services/ui-preferences';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../../core/components/confirm-dialog/confirm-dialog';
+import { NotificationService } from '../../../core/services/notification';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +26,8 @@ export class Dashboard {
     private onBoardingService: OnBoardingService,
     private readonly router: Router,
     readonly ui: UiPreferencesService,
+    private readonly dialog: MatDialog,
+    private readonly notificationService: NotificationService
   ) { }
 
   get columns(): ColumnConfig[] {
@@ -56,6 +61,35 @@ export class Dashboard {
         label: this.ui.t('dashboard.colFiles'),
         type: 'number',
         getValue: (row) => (row.files ? row.files?.length : 0),
+      },
+      {
+        key: 'delete',
+        label: '',
+        type: 'action',
+        icon: 'delete',
+        action: (row: Registration, reload) => {
+          this.dialog.open(ConfirmDialog, {
+            data: {
+              title: this.ui.t('dashboard.deleteTitle'),
+              message: this.ui.t('dashboard.deleteMessage').replace('{{email}}', row.email),
+              confirmText: this.ui.t('dashboard.deleteConfirm'),
+              cancelText: this.ui.t('details.cancel'),
+            }
+          }).afterClosed().subscribe(confirmed => {
+            if (confirmed) {
+              this.onBoardingService.deleteAdminRegistration(row.id).subscribe({
+                next: () => {
+                  this.notificationService.info(this.ui.t('dashboard.deleteSuccess'));
+                  reload();
+                },
+                error: (error) => {
+                  console.error('Error deleting registration', error);
+                  this.notificationService.error(this.ui.t('dashboard.deleteError'));
+                }
+              });
+            }
+          });
+        }
       },
     ];
   }

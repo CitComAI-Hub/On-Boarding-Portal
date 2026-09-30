@@ -6,19 +6,32 @@ import { readFileSync } from "fs";
 import nodemailer, { Transporter } from 'nodemailer';
 import SMTPPool from "nodemailer/lib/smtp-pool";
 import { MailContext } from "../type/main-context";
+import { RegistrationStatus } from "../entity/registration.entity";
+import { DOUBLE_CURLY_BRACE_REGEX, TemplateService } from "./template.service";
 
 const emailConfig = configService.get().email
+
+interface AdminNotificationResult {
+    accepted: string[];
+    rejected: string[];
+}
 
 interface EmailService {
 
     sendSubmitEmail(email: string, mailContext: MailContext): Promise<void>;
     sendUpdateEmail(email: string, mailContext: MailContext): Promise<void>;
+    sendAdminNotificationEmail(emails: string[], mailContext: MailContext): Promise<AdminNotificationResult>;
 }
 
 abstract class BaseMailService implements EmailService {
 
     abstract sendSubmitEmail(email: string, mailContext: MailContext): Promise<void>;
     abstract sendUpdateEmail(email: string, mailContext: MailContext): Promise<void>;
+    abstract sendAdminNotificationEmail(emails: string[], mailContext: MailContext): Promise<AdminNotificationResult>;
+    templateService: TemplateService;
+    constructor() {
+        this.templateService = new TemplateService(DOUBLE_CURLY_BRACE_REGEX);
+    }
 
     _getTemplate(value: string, mailContext: MailContext): string {
         if (!value.startsWith("file://")) {
@@ -31,23 +44,12 @@ abstract class BaseMailService implements EmailService {
 
             const content = readFileSync(absolutePath, 'utf-8');
 
-            return content.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (_, key) =>
-                this.getValueByPath(mailContext, key)
-            );
+            return this.templateService.replace(content, mailContext);
         } catch (error) {
             logger.error(`Error loading file at ${value}:`, error);
             throw error;
         }
     }
-    private getValueByPath(context: MailContext, path: string) {
-        if (!path) return "";
-
-        const result = path.split('.').reduce((acc, part) => {
-            return (acc && acc[part] !== undefined) ? acc[part] : undefined;
-        }, context as any);
-
-        return result !== undefined && result !== null ? result : "";
-    };
 }
 
 class NodemailerEmailService extends BaseMailService {
@@ -71,30 +73,49 @@ class NodemailerEmailService extends BaseMailService {
     }
 
     async sendUpdateEmail(email: string, mailContext: MailContext): Promise<void> {
-        const template = this._getTemplate(this.emailConfig.update.html, mailContext)
+        const isActive = mailContext.registration.status === RegistrationStatus.ACTIVE;
+        const mailTemplate = isActive ? this.emailConfig.active : this.emailConfig.update;
+        const template = this._getTemplate(mailTemplate.html, mailContext)
         await this.transport.sendMail({
             from: this.emailConfig.from,
             to: email,
-            subject: this.emailConfig.update.subject,
+            subject: mailTemplate.subject,
             html: template
         })
+    }
+
+    async sendAdminNotificationEmail(emails: string[], mailContext: MailContext): Promise<AdminNotificationResult> {
+        const mailTemplate = this.emailConfig.adminNotification;
+        const template = this._getTemplate(mailTemplate.html, mailContext)
+        const info = await this.transport.sendMail({
+            from: this.emailConfig.from,
+            bcc: emails,
+            subject: mailTemplate.subject,
+            html: template
+        })
+        return { accepted: info.accepted as string[], rejected: info.rejected as string[] };
     }
 }
 
 class DisabledMailService extends BaseMailService {
 
     sendSubmitEmail(email: string, mailContext: MailContext): Promise<void> {
-        logger.debug('Mail service is disabeld')
+        logger.debug('Mail service is disabled')
         return Promise.resolve();
     }
     sendUpdateEmail(email: string, mailContext: MailContext): Promise<void> {
-        logger.debug('Mail service is disabeld')
+        logger.debug('Mail service is disabled')
         return Promise.resolve();
+    }
+    sendAdminNotificationEmail(emails: string[], mailContext: MailContext): Promise<AdminNotificationResult> {
+        logger.debug('Mail service is disabled')
+        return Promise.resolve({ accepted: emails, rejected: [] });
     }
 }
 
 const emailService = (() => {
     if (!emailConfig.enabled) {
+        logger.info(`Mail service is disabled. No emails will be sent`)
         return new DisabledMailService();
     }
     logger.info(`Using '${emailConfig.type}' to send emails`)

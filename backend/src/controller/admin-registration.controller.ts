@@ -9,6 +9,7 @@ import emailService from "../service/email.service";
 import { logger } from "../service/logger";
 import { registrationService } from "../service/registration.service";
 import { MailContext } from "../type/main-context";
+import { keycloakService } from "../service/keycloak.service";
 
 const router = Router()
 
@@ -73,6 +74,41 @@ router.get('/admin/registrations/:id', authFilter, async (req: Request, res: Res
     }
 });
 
+router.delete('/admin/registrations/:id', authFilter, async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        const queryRunner = registrationRepository.transaction();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
+        const registration = await registrationRepository.findById(id, queryRunner);
+        if (!registration) {
+            return res.status(404).json({
+                message: `Registration with ID ${id} not found`
+            });
+        }
+
+        if (registration.status === RegistrationStatus.ACTIVE) {
+            await registrationService.unregister(registration.did, registration.didGenerated);
+        }
+        await registrationRepository.delete(id, queryRunner);
+        logger.info(`Registration ${id} deleted by admin.`);
+
+        await queryRunner.commitTransaction();
+
+        res.status(200).json({
+            message: `Registration with ID ${id} has been deleted`
+        });
+    } catch (error) {
+        logger.error('Error deleting registration:', error);
+        res.status(500).json({
+            message: 'Error deleting the registration record',
+            error: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+});
+
 router.put('/admin/registrations/:id', authFilter, async (req: Request, res: Response) => {
     const { id } = req.params;
     const { status, reason } = req.body;
@@ -90,9 +126,9 @@ router.put('/admin/registrations/:id', authFilter, async (req: Request, res: Res
 
         // Update realm and TIR
         if (prevRegistration.status !== RegistrationStatus.ACTIVE && status === RegistrationStatus.ACTIVE) {
-            await registrationService.register(registration.did);
-        } else if(prevRegistration.status === RegistrationStatus.ACTIVE && status !== RegistrationStatus.ACTIVE) {
-            await registrationService.unregister(registration.did);
+            await registrationService.register(registration);
+        } else if (prevRegistration.status === RegistrationStatus.ACTIVE && status !== RegistrationStatus.ACTIVE) {
+            await registrationService.unregister(registration.did, registration.didGenerated);
         }
 
         await queryRunner.commitTransaction();
@@ -107,16 +143,18 @@ router.put('/admin/registrations/:id', authFilter, async (req: Request, res: Res
             const mailContext: MailContext = {
                 registration,
                 previousState: prevRegistration.status,
-                serverOrigin: (req as any).serverOrigin
+                serverOrigin: (req as any).serverOrigin,
+                accountUrl: keycloakService.getAccountUrl(registration.did),
+                adminUrl: keycloakService.getAdminUrl(registration.did)
             }
             await emailService.sendUpdateEmail(registration.email, mailContext)
-        } catch(error){
+        } catch (error) {
             logger.warn('Unable to send update email.', error)
         }
-    } catch(error) {
+    } catch (error) {
         logger.error('Unable to update status.', error);
         await queryRunner.rollbackTransaction();
-        res.status(500).send({error: 'Error updating status'})
+        res.status(500).send({ error: 'Error updating status' })
     } finally {
         await queryRunner.release();
     }
