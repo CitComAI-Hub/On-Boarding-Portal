@@ -53,8 +53,7 @@ export class Toolbar {
   }
 
   onLogout(): void {
-    this.authService.logout()
-    this.goLanding();
+    this.authService.signOut();
   }
 
   openExternal(url: string): void {

@@ -109,6 +109,30 @@ class OidcService {
         }
     }
 
+    async logout(req: Request, res: Response) {
+        const idToken = req.cookies?.id_token;
+        const cookieOptions = { path: '/' };
+        ['authorization', 'refresh_token', 'id_token', 'pkce_verifier'].forEach(name => res.clearCookie(name, cookieOptions));
+
+        const post_logout_redirect_uri = `${this._getHostUrl(req)}/`;
+        try {
+            const issuer = await this.getIssuer();
+            if (!issuer.serverMetadata().end_session_endpoint) {
+                return res.redirect(post_logout_redirect_uri);
+            }
+            const params: Record<string, string> = { post_logout_redirect_uri };
+            if (idToken) {
+                params.id_token_hint = idToken;
+            } else {
+                params.client_id = app.login.clientId;
+            }
+            res.redirect(client.buildEndSessionUrl(issuer, params).toString());
+        } catch (err) {
+            logger.error('Error building end session url', err);
+            res.redirect(post_logout_redirect_uri);
+        }
+    }
+
     async validate(accessToken: string): Promise<JWTPayload> {
         const metadata = (await this.getIssuer()).serverMetadata();
 
@@ -141,6 +165,9 @@ class OidcService {
         const cookieOptions = { httpOnly: true, secure: isHttps, sameSite: 'strict' as const, path: '/' };
         res.cookie('authorization', token.access_token, { ...cookieOptions, maxAge: token.expires_in ? token.expires_in * 1000 : undefined });
         res.cookie('refresh_token', token.refresh_token, cookieOptions);
+        if (token.id_token) {
+            res.cookie('id_token', token.id_token, cookieOptions);
+        }
     }
 }
 

@@ -66,7 +66,7 @@ export class AuthService {
         window.localStorage.setItem("refresh_token", refreshToken)
       }
       this.accessToken = accessToken;
-      this.refreshToken = this.refreshToken;
+      this._refreshToken = refreshToken;
       return true;
     } catch (err) {
       console.error("Unable to set token", err);
@@ -101,6 +101,12 @@ export class AuthService {
     window.localStorage.removeItem('refresh_token');
     this.accessToken = undefined;
     this._refreshToken = undefined;
+  }
+
+  // Clears the local session and ends the backend cookies and the Keycloak SSO session.
+  signOut() {
+    this.logout();
+    window.location.href = this._resolveUrl('/api/logout');
   }
 
   refreshToken(): Observable<any> {
