@@ -44,6 +44,7 @@ export interface AppCfg {
     documentToSignUrl: string;
     projectWebsiteUrl: string;
     marketplaceUrl: string;
+    keycloakAdminUrl: string;
 }
 
 export interface LoginConfig {

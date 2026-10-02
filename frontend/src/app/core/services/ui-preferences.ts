@@ -21,6 +21,7 @@ export class UiPreferencesService {
     readonly marketplaceUrl =
         getMetadata<string>('marketplaceUrl', 'https://marketplace.example.com/') ||
         'https://marketplace.example.com/';
+    readonly keycloakAdminUrl = getMetadata<string>('keycloakAdminUrl', '') || '';
     readonly enableThemeToggle = getMetadataAsBoolean('enableThemeToggle', true) ?? true;
 
     readonly theme = this.currentTheme.asReadonly();
@@ -33,6 +34,7 @@ export class UiPreferencesService {
             'toolbar.admin': 'Admin Portal',
             'toolbar.start': 'Start Onboarding',
             'toolbar.logout': 'Logout',
+            'toolbar.keycloakAdmin': 'Keycloak Admin',
             'toolbar.theme': 'Switch theme',
             'toolbar.language': 'Language',
             'toolbar.langEnglish': 'English',
@@ -47,7 +49,7 @@ export class UiPreferencesService {
             'landing.ctaStart': 'Start Onboarding',
             'landing.ctaStatus': 'Check Application Status',
             'landing.ctaProject': 'Visit Project Website',
-            'landing.ctaMarketplace': 'Open Future Marketplace',
+            'landing.ctaMarketplace': 'Marketplace',
 
             'landing.pillarTrust': 'Trust by Design',
             'landing.pillarTrustDesc':
@@ -195,6 +197,7 @@ export class UiPreferencesService {
             'toolbar.admin': 'Portal Admin',
             'toolbar.start': 'Iniciar Onboarding',
             'toolbar.logout': 'Cerrar sesión',
+            'toolbar.keycloakAdmin': 'Admin Keycloak',
             'toolbar.theme': 'Cambiar tema',
             'toolbar.language': 'Idioma',
             'toolbar.langEnglish': 'Inglés',
@@ -209,7 +212,7 @@ export class UiPreferencesService {
             'landing.ctaStart': 'Iniciar Onboarding',
             'landing.ctaStatus': 'Consultar Estado de Solicitud',
             'landing.ctaProject': 'Visitar Web del Proyecto',
-            'landing.ctaMarketplace': 'Abrir Marketplace Futuro',
+            'landing.ctaMarketplace': 'Marketplace',
 
             'landing.pillarTrust': 'Confianza desde el diseño',
             'landing.pillarTrustDesc':

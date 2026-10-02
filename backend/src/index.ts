@@ -83,6 +83,7 @@ appServer.use((_req, res) => {
       documentToSignUrl: app.documentToSignUrl,
       projectWebsiteUrl: app.projectWebsiteUrl,
       marketplaceUrl: app.marketplaceUrl,
+      keycloakAdminUrl: app.keycloakAdminUrl,
       didCreationEnabled: app.keycloak.didCreationEnabled
     });
     await initializeDatabase()

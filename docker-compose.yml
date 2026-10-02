@@ -27,8 +27,10 @@ services:
     environment:
       APP_BROWSER_TITLE: ${APP_BROWSER_TITLE:-CitCom.ai Onboarding DS}
       APP_ENABLE_THEME_TOGGLE: ${APP_ENABLE_THEME_TOGGLE:-false}
+      APP_MARKETPLACE_URL: ${APP_MARKETPLACE_URL:-https://marketplace.example.com/}
+      APP_KEYCLOAK_ADMIN_URL: ${APP_KEYCLOAK_ADMIN_URL:-}
     ports:
-      - "8080:8080"
+      - "8082:8080"
     volumes:
       - ./local/config:/app/config:ro
       - onboarding_files_data:/app/files

@@ -13,7 +13,8 @@ app:
   enableThemeToggle: "${APP_ENABLE_THEME_TOGGLE}"
   documentToSignUrl: "https://example.com/documento-a-firmar.pdf"
   projectWebsiteUrl: "https://citcomtef.eu/"
-  marketplaceUrl: "https://marketplace.example.com/"
+  marketplaceUrl: "${APP_MARKETPLACE_URL}"
+  keycloakAdminUrl: "${APP_KEYCLOAK_ADMIN_URL}"
   tir:
     url: "https://example.com/issuer"
   login:

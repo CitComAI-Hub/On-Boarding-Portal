@@ -19,6 +19,13 @@
                 <span class="admin-label">{{ ui.t('toolbar.admin') }}</span>
             </button>
             }
+            @if(showUserMenu && user && ui.keycloakAdminUrl) {
+            <button mat-button class="nav-link admin-button" [attr.aria-label]="ui.t('toolbar.keycloakAdmin')"
+                (click)="openExternal(ui.keycloakAdminUrl)">
+                <mat-icon>admin_panel_settings</mat-icon>
+                <span class="admin-label">{{ ui.t('toolbar.keycloakAdmin') }}</span>
+            </button>
+            }
             @if(showUserMenu && user) {
             <button matButton="text" [matMenuTriggerFor]="menu">
                 <mat-icon>person</mat-icon>
@@ -34,17 +41,17 @@
             }
 
             <button mat-button [matMenuTriggerFor]="languageMenu" class="lang-button">
-                <span class="lang-flag" aria-hidden="true">{{ ui.language() === 'es' ? '🇪🇸' : '🇬🇧' }}</span>
+                <img class="lang-flag" [src]="'/flags/' + ui.language() + '.svg'" alt="" aria-hidden="true" width="20" height="14" />
                 <span class="lang-code">{{ ui.language().toUpperCase() }}</span>
             </button>
 
             <mat-menu #languageMenu="matMenu">
                 <button mat-menu-item (click)="ui.setLanguage('en')">
-                    <span class="lang-flag" aria-hidden="true">🇬🇧</span>
+                    <img class="lang-flag" src="/flags/en.svg" alt="" aria-hidden="true" width="20" height="14" />
                     {{ ui.t('toolbar.langEnglish') }}
                 </button>
                 <button mat-menu-item (click)="ui.setLanguage('es')">
-                    <span class="lang-flag" aria-hidden="true">🇪🇸</span>
+                    <img class="lang-flag" src="/flags/es.svg" alt="" aria-hidden="true" width="20" height="14" />
                     {{ ui.t('toolbar.langSpanish') }}
                 </button>
             </mat-menu>

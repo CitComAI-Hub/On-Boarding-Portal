@@ -40,6 +40,8 @@ The application expects specific keys within those secrets. If your existing sec
 | Parameter | Description |
 | --- | --- |
 | `config.app.documentToSignUrl` | External URL for the document to be signed. |
+| `config.app.marketplaceUrl` | URL opened by the "Marketplace" buttons (landing page and footer). |
+| `config.app.keycloakAdminUrl` | Keycloak admin console URL (e.g. `https://onboarding-admin.example.com/admin/`). When set, a "Keycloak Admin" button is shown in the admin portal toolbar; hidden if empty. |
 | `config.app.login.openIdUrl` | Full OIDC discovery endpoint (must be reachable by the Pod) |
 | `config.app.tir.url` | Internal endpoint for the Trust Anchor Service. |
 

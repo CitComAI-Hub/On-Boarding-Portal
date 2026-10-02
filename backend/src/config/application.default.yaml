@@ -39,6 +39,7 @@ app:
   enableThemeToggle: true
   projectWebsiteUrl: "https://project.example.com/"
   marketplaceUrl: "https://marketplace.example.com/"
+  keycloakAdminUrl: ""
   login:
     openIdUrl: ""
     clientId: ""

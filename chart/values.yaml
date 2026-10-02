@@ -154,6 +154,9 @@ config:
     enableThemeToggle: true
     projectWebsiteUrl: "https://citcomtef.eu/"
     marketplaceUrl: ""
+    # -- Keycloak admin console URL (e.g. https://onboarding-admin.example.com/admin/).
+    # When set, a button to open it is shown in the admin portal toolbar.
+    keycloakAdminUrl: ""
     documentToSignUrl: ""
     login:
       openIdUrl: ""
