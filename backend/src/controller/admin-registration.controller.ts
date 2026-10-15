@@ -1,7 +1,6 @@
 import { Request, Response, Router } from "express";
 import { RegistrationStatus } from "../entity/registration.entity";
-import { In } from "typeorm";
-import { registrationRepository } from "../repository/registration.repository";
+import { REGISTRATION_SORT_FIELDS, RegistrationSortField, registrationRepository } from "../repository/registration.repository";
 import { PaginationHeader } from "../headers/pagination.headers";
 import { oidcAuthMiddleware } from "../middleware/auth.middleware";
 import { storageService } from "../service/storage.service";
@@ -18,20 +17,21 @@ router.get('/admin/registrations', authFilter, async (req: Request, res: Respons
     try {
 
         const { page, limit, sortBy, order } = PaginationHeader.parsePagination(req);
-        const statusQuery = req.query.status as string;
+        const statusQuery = typeof req.query.status === 'string' ? req.query.status : '';
+        const statuses = statusQuery.split(',')
+            .filter((status): status is RegistrationStatus =>
+                Object.values(RegistrationStatus).includes(status as RegistrationStatus));
+        const search = typeof req.query.search === 'string' ? req.query.search : undefined;
 
-        let where: any = {};
-
-        if (statusQuery) {
-            const statuses = statusQuery.split(',') as RegistrationStatus[];
-            where.status = In(statuses);
-        }
-
-        const result = await registrationRepository.find({
+        const result = await registrationRepository.search({
             page,
             limit,
-            where,
-            order: { [sortBy]: order }
+            statuses,
+            search,
+            sortBy: REGISTRATION_SORT_FIELDS.includes(sortBy as RegistrationSortField)
+                ? sortBy as RegistrationSortField
+                : 'name',
+            order: order === 'DESC' ? 'DESC' : 'ASC',
         });
 
         if (result.items) {

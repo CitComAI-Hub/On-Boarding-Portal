@@ -4,8 +4,13 @@ import { Observable } from "rxjs";
 export interface PaginationQuery {
   page: number;
   limit: number;
-  sortBy?: number;
+  sortBy?: string;
   order?: 'DESC' | 'ASC';
+}
+
+export interface TableSort {
+  active: string;
+  direction: 'asc' | 'desc';
 }
 
 export interface PaginatedResponse<T> {
@@ -16,4 +21,9 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
-export type PageQueryFn<T> = (page: number, limit: number, filter: { [key: string]: any }) => Observable<PaginatedResponse<T>>;
+export type PageQueryFn<T> = (
+  page: number,
+  limit: number,
+  filter: { [key: string]: any },
+  sort: TableSort | null,
+) => Observable<PaginatedResponse<T>>;

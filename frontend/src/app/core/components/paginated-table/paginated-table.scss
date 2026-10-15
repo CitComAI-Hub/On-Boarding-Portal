@@ -61,18 +61,41 @@
   width: 100%;
   background: transparent;
 
-  th.mat-header-cell {
+  th.mat-mdc-header-cell {
     background-color: var(--app-surface-soft);
-    color: var(--app-primary-strong);
-    font-weight: 600;
+    color: var(--app-ink);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     white-space: nowrap;
     padding: 0 16px;
   }
 
-  td.mat-cell {
-    padding: 0 16px;
+  td.mat-mdc-cell {
+    padding: 12px 16px;
     color: var(--app-ink-muted);
+    font-variant-numeric: tabular-nums;
   }
+
+  .action-header,
+  .action-cell {
+    width: 56px;
+    padding: 0 8px;
+    text-align: right;
+  }
+}
+
+.cell-primary {
+  display: block;
+  color: var(--app-ink);
+  font-weight: 600;
+}
+
+.cell-secondary {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.85rem;
+  color: var(--app-ink-muted);
 }
 
 .clickable-row {

@@ -281,3 +281,33 @@ button[color="warn"] {
   align-items: center;
   gap: 12px;
 }
+
+.app-status-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  background: var(--app-status-pending-bg);
+  color: var(--app-ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &[data-status='under_review'] {
+    background: var(--app-status-under-review-bg);
+    color: var(--app-status-under-review-text);
+  }
+
+  &[data-status='action_required'],
+  &[data-status='rejected'] {
+    border-color: var(--app-status-rejected-border);
+    background: var(--app-status-rejected-bg);
+    color: var(--app-status-rejected-text);
+  }
+
+  &[data-status='active'] {
+    border-color: var(--app-status-active-border);
+    background: var(--app-status-active-bg);
+    color: var(--app-status-active-text);
+  }
+}

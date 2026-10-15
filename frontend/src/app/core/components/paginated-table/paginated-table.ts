@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { PageQueryFn } from '../../types/pagination';
+import { PageQueryFn, TableSort } from '../../types/pagination';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSortModule, Sort } from '@angular/material/sort';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { ActionColumn, ColumnConfig } from '../../types/column-config';
@@ -21,6 +23,8 @@ import { UiPreferencesService } from '../../services/ui-preferences';
     CommonModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSortModule,
+    MatTooltipModule,
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -39,6 +43,7 @@ export class PaginatedTable<T> implements OnInit {
   @Input() filtersConfig?: FilterConfig[];
   @Input() pageSizeOptions: number[] = [10, 25, 50];
   @Input() emptyMessage: string = '';
+  @Input() defaultSort: TableSort | null = null;
   @Output() rowClick = new EventEmitter<T>();
 
   get displayedColumns(): string[] {
@@ -52,12 +57,14 @@ export class PaginatedTable<T> implements OnInit {
   currentPage = 0;
   isLoading = signal(false);
   filterForm = new FormGroup({});
+  sort: TableSort | null = null;
 
   constructor(readonly ui: UiPreferencesService) {
     this.emptyMessage = this.ui.t('table.noRecords');
   }
 
   ngOnInit(): void {
+    this.sort = this.defaultSort;
     if (this.filtersConfig) {
       this.filtersConfig.forEach(f => this.filterForm.addControl(f.key, new FormControl(null)));
 
@@ -74,7 +81,7 @@ export class PaginatedTable<T> implements OnInit {
 
   loadData(): void {
     this.isLoading.set(true);
-    this.fetchDataFn(this.currentPage, this.pageSize, this.filterForm.value).subscribe({
+    this.fetchDataFn(this.currentPage, this.pageSize, this.filterForm.value, this.sort).subscribe({
       next: (res) => {
         this.dataSource.data = res.items;
         this.totalItems = res.total;
@@ -90,8 +97,18 @@ export class PaginatedTable<T> implements OnInit {
     this.loadData();
   }
 
+  onSortChange(event: Sort): void {
+    this.sort = event.direction ? { active: event.active, direction: event.direction } : this.defaultSort;
+    this.currentPage = 0;
+    this.loadData();
+  }
+
   onRowClicked(row: T): void {
     this.rowClick.emit(row);
+  }
+
+  getSecondary(col: ColumnConfig, row: any): string {
+    return col.type === 'text' && col.getSecondary ? col.getSecondary(row) : '';
   }
 
   getValue(col: ColumnConfig, row: any): any {

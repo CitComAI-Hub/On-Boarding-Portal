@@ -7,7 +7,7 @@
             </span>
             <h2 class="status-title" id="status-headline">{{ ui.t('track.headline.' + registration().status) }}</h2>
         </div>
-        <span class="status-tag" [attr.data-status]="registration().status">
+        <span class="app-status-tag status-tag" [attr.data-status]="registration().status">
             {{ ui.t('status.' + registration().status) }}
         </span>
     </div>

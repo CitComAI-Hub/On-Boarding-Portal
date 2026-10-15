@@ -157,7 +157,7 @@ export class AdminRegistrationDetails implements OnInit, OnDestroy {
     this.dialog.open(ConfirmDialog, {
       data: {
         title: this.ui.t('dashboard.deleteTitle'),
-        message: this.ui.t('dashboard.deleteMessage').replace('{{email}}', this.registration().email),
+        message: this.ui.replace('dashboard.deleteMessage', { name: this.registration().name }),
         confirmText: this.ui.t('dashboard.deleteConfirm'),
         cancelText: this.ui.t('details.cancel'),
       }

@@ -46,24 +46,36 @@
   }
 
   <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" class="custom-styled-table">
+    <table mat-table [dataSource]="dataSource" class="custom-styled-table" matSort matSortDisableClear
+      [matSortActive]="defaultSort?.active ?? ''" [matSortDirection]="defaultSort?.direction ?? ''"
+      (matSortChange)="onSortChange($event)">
       @for (col of columnsConfig; track col.key) {
       <ng-container [matColumnDef]="col.key">
-        <th mat-header-cell *matHeaderCellDef> {{ col.label }} </th>
-        <td mat-cell *matCellDef="let row">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!col.sortable"
+          [class.action-header]="col.type === 'action'"> {{ col.label }} </th>
+        <td mat-cell *matCellDef="let row" [class.action-cell]="col.type === 'action'">
           @switch (col.type) {
           @case ('date') {
           {{ getValue(col, row) | date: (col.dateFormat || 'mediumDate') }}
           }
           @case ('text') {
-          @if (col.uppercase) {
-          {{ getValue(col, row) | uppercase }}
-          } @else {
-          {{ getValue(col, row) }}
+          <span class="cell-primary">
+            @if (col.uppercase) {
+            {{ getValue(col, row) | uppercase }}
+            } @else {
+            {{ getValue(col, row) }}
+            }
+          </span>
+          @if (getSecondary(col, row); as secondary) {
+          <span class="cell-secondary">{{ secondary }}</span>
           }
+          }
+          @case ('status') {
+          <span class="app-status-tag" [attr.data-status]="row[col.key]">{{ getValue(col, row) }}</span>
           }
           @case ('action') {
-          <button mat-icon-button (click)="onActionClicked($event, col, row)">
+          <button mat-icon-button type="button" (click)="onActionClicked($event, col, row)"
+            [attr.aria-label]="col.tooltip || col.label" [matTooltip]="col.tooltip || ''">
             <mat-icon>{{ col.icon }}</mat-icon>
           </button>
           }
@@ -77,8 +89,8 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)" class="clickable-row"
-        tabindex="0">
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)"
+        (keydown.enter)="onRowClicked(row)" class="clickable-row" tabindex="0">
       </tr>
 
       <tr class="mat-row" *matNoDataRow>

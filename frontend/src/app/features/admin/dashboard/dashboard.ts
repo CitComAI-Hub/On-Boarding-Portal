@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PaginatedTable } from '../../../core/components/paginated-table/paginated-table';
-import { PageQueryFn } from '../../../core/types/pagination';
+import { PageQueryFn, TableSort } from '../../../core/types/pagination';
 import { Registration } from '../../../core/types/registration';
 import { OnBoardingService } from '../../../core/services/onboarding.service';
 import { ColumnConfig } from '../../../core/types/column-config';
@@ -30,31 +30,37 @@ export class Dashboard {
     private readonly notificationService: NotificationService
   ) { }
 
+  readonly defaultSort: TableSort = { active: 'name', direction: 'asc' };
+
   get columns(): ColumnConfig[] {
     return [
       {
-        key: 'email',
-        label: this.ui.t('dashboard.colEmail'),
+        key: 'name',
+        label: this.ui.t('dashboard.colOrganization'),
         type: 'text',
+        sortable: true,
+        getSecondary: (row: Registration) => row.email,
       },
       {
         key: 'status',
         label: this.ui.t('dashboard.colStatus'),
-        type: 'text',
-        uppercase: true,
-        getValue: (row) => row.status.split('_').join(' '),
+        type: 'status',
+        sortable: true,
+        getValue: (row: Registration) => this.ui.t(`status.${row.status}`),
       },
       {
         key: 'createdAt',
         label: this.ui.t('dashboard.colCreatedAt'),
         type: 'date',
+        sortable: true,
         dateFormat: 'dd/MM/yyyy HH:mm',
       },
       {
         key: 'updatedAt',
         label: this.ui.t('dashboard.colUpdatedAt'),
         type: 'date',
-        dateFormat: 'dd/MM/yyyy HH:mm:ss',
+        sortable: true,
+        dateFormat: 'dd/MM/yyyy HH:mm',
       },
       {
         key: 'files',
@@ -67,11 +73,12 @@ export class Dashboard {
         label: '',
         type: 'action',
         icon: 'delete',
+        tooltip: this.ui.t('dashboard.deleteTitle'),
         action: (row: Registration, reload) => {
           this.dialog.open(ConfirmDialog, {
             data: {
               title: this.ui.t('dashboard.deleteTitle'),
-              message: this.ui.t('dashboard.deleteMessage').replace('{{email}}', row.email),
+              message: this.ui.replace('dashboard.deleteMessage', { name: row.name }),
               confirmText: this.ui.t('dashboard.deleteConfirm'),
               cancelText: this.ui.t('details.cancel'),
             }
@@ -95,21 +102,35 @@ export class Dashboard {
   }
 
   get filters(): FilterConfig[] {
-    return [{
-      key: 'status',
-      label: this.ui.t('dashboard.colStatus'),
-      type: 'enum',
-      multiple: true,
-      options: Object.keys(RegistrationStatus).map((key) => ({
-        label: key.split('_').join(' '),
-        value: String(RegistrationStatus[key as keyof typeof RegistrationStatus]),
-      })),
-    }];
+    return [
+      {
+        key: 'search',
+        label: this.ui.t('dashboard.search'),
+        type: 'text',
+      },
+      {
+        key: 'status',
+        label: this.ui.t('dashboard.colStatus'),
+        type: 'enum',
+        multiple: true,
+        options: Object.values(RegistrationStatus).map((status) => ({
+          label: this.ui.t(`status.${status}`),
+          value: status,
+        })),
+      },
+    ];
   }
 
-  fetchRegistrations: PageQueryFn<Registration> = (page: number, limit: number, filter: { [key: string]: any }) => {
-    const { status } = filter
-    return this.onBoardingService.getAdminRegistrations({ page, limit, status: status });
+  fetchRegistrations: PageQueryFn<Registration> = (page, limit, filter, sort) => {
+    const { status, search } = filter;
+    return this.onBoardingService.getAdminRegistrations({
+      page,
+      limit,
+      status,
+      search,
+      sortBy: sort?.active,
+      order: sort?.direction === 'desc' ? 'DESC' : 'ASC',
+    });
   };
 
   goToReview(event: Registration) {

@@ -79,7 +79,7 @@ export class OnBoardingService {
     }
 
     getAdminRegistrations(
-        pagination: PaginationQuery & { status?: string | string[] } = { page: 0, limit: 10 }
+        pagination: PaginationQuery & { status?: string | string[], search?: string } = { page: 0, limit: 10 }
     ): Observable<PaginatedResponse<Registration>> {
 
         const url = this._resolveUrl(this.registrations);
@@ -87,8 +87,12 @@ export class OnBoardingService {
         let params = new HttpParams()
             .set('page', pagination.page.toString())
             .set('limit', pagination.limit.toString())
-            .set('sortBy', 'createdAt')
-            .set('order', 'DESC');
+            .set('sortBy', pagination.sortBy || 'name')
+            .set('order', pagination.order || 'ASC');
+
+        if (pagination.search?.trim()) {
+            params = params.set('search', pagination.search.trim());
+        }
 
         if (pagination.status) {
             const statusValue = Array.isArray(pagination.status)
