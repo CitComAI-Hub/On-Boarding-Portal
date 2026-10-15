@@ -16,6 +16,8 @@ export interface Registration {
     createdAt: Date;
     updatedAt: Date;
     adminUrl?: string;
+    // True when the portal created the realm and DID; false when the organization supplied its own DID.
+    didGenerated?: boolean;
 }
 
 export interface FileMetadata {

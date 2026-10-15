@@ -22,7 +22,6 @@ import { UiPreferencesService } from '../../services/ui-preferences';
 })
 export class Toolbar {
 
-  @Input() showAdminLogin = true;
   @Input() showUserMenu = false;
   user: any;
   constructor(
@@ -37,17 +36,6 @@ export class Toolbar {
     return this.authService.isLoggedIn;
   }
 
-  onAdminLogin() {
-    if (this.authService.isLoggedIn) {
-      this.goAdminDashboard();
-    } else {
-      this.authService.login();
-    }
-  }
-
-  goAdminDashboard() {
-    this.router.navigate(['/admin'])
-  }
   goLanding(): void {
     this.router.navigate(['/'])
   }

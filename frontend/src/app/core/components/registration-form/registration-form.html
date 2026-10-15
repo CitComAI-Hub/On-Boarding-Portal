@@ -1,123 +1,188 @@
-<div class="tab-content">
-    @if(!registrationId) {
-    <header class="section-header">
-        <h2>{{ ui.t('form.headerTitle') }}</h2>
-        <p>{{ ui.t('form.headerDesc') }}</p>
-    </header>
+@switch (step()) {
+@case (0) {
+<form [formGroup]="orgForm" class="wizard-form" (ngSubmit)="next()" novalidate>
+    <fieldset class="app-card fieldset">
+        <legend class="app-visually-hidden">{{ ui.t('form.entityGroup') }}</legend>
+        <h2 class="app-card-title" aria-hidden="true">
+            <mat-icon>corporate_fare</mat-icon>
+            {{ ui.t('form.entityGroup') }}
+        </h2>
+        <div class="field-grid">
+            @let name = orgForm.get('name');
+            <app-form-field class="span-all" fieldId="org-name" [label]="ui.t('form.name')" [error]="errorFor(name)">
+                <input id="org-name" class="app-input" type="text" formControlName="name" autocomplete="organization"
+                    [placeholder]="ui.t('form.namePlaceholder')" [attr.aria-invalid]="!!errorFor(name)"
+                    [attr.aria-describedby]="describedBy('org-name', name)" required>
+            </app-form-field>
 
-    <mat-stepper linear #stepper animationDuration="400ms">
-        <mat-step [stepControl]="orgForm" errorMessage="Required">
-            <ng-template matStepLabel>{{ ui.t('form.stepCompany') }}</ng-template>
+            @let taxId = orgForm.get('taxId');
+            <app-form-field fieldId="org-tax-id" [label]="ui.t('form.taxId')" [error]="errorFor(taxId)">
+                <input id="org-tax-id" class="app-input" type="text" formControlName="taxId"
+                    [placeholder]="ui.t('form.taxIdPlaceholder')" [attr.aria-invalid]="!!errorFor(taxId)"
+                    [attr.aria-describedby]="describedBy('org-tax-id', taxId)" required>
+            </app-form-field>
 
-            <form [formGroup]="orgForm" class="grid-layout">
-                <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>{{ ui.t('form.name') }}</mat-label>
-                    <input matInput formControlName="name" placeholder="e.g. Acme Corporation S.L.">
-                    <mat-icon matSuffix>corporate_fare</mat-icon>
-                </mat-form-field>
+            @let country = orgForm.get('country');
+            <app-form-field fieldId="org-country" [label]="ui.t('form.country')" [error]="errorFor(country)">
+                <input id="org-country" class="app-input" type="text" formControlName="country"
+                    autocomplete="country-name" [placeholder]="ui.t('form.countryPlaceholder')"
+                    [attr.aria-invalid]="!!errorFor(country)"
+                    [attr.aria-describedby]="describedBy('org-country', country)" required>
+            </app-form-field>
 
-                <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>{{ ui.t('form.address') }}</mat-label>
-                    <input matInput formControlName="address" placeholder="e.g. 123 Business St. Suite 400">
-                    <mat-icon matSuffix>place</mat-icon>
-                </mat-form-field>
+            @let address = orgForm.get('address');
+            <app-form-field class="span-all" fieldId="org-address" [label]="ui.t('form.address')"
+                [error]="errorFor(address)">
+                <input id="org-address" class="app-input" type="text" formControlName="address"
+                    autocomplete="street-address" [placeholder]="ui.t('form.addressPlaceholder')"
+                    [attr.aria-invalid]="!!errorFor(address)"
+                    [attr.aria-describedby]="describedBy('org-address', address)" required>
+            </app-form-field>
 
-                <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>{{ ui.t('form.city') }}</mat-label>
-                    <input matInput formControlName="city" placeholder="e.g. Madrid">
-                    <mat-icon matSuffix>location_city</mat-icon>
-                </mat-form-field>
+            @let city = orgForm.get('city');
+            <app-form-field fieldId="org-city" [label]="ui.t('form.city')" [error]="errorFor(city)">
+                <input id="org-city" class="app-input" type="text" formControlName="city" autocomplete="address-level2"
+                    [placeholder]="ui.t('form.cityPlaceholder')" [attr.aria-invalid]="!!errorFor(city)"
+                    [attr.aria-describedby]="describedBy('org-city', city)" required>
+            </app-form-field>
 
-                <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>{{ ui.t('form.country') }}</mat-label>
-                    <input matInput formControlName="country" placeholder="e.g. Spain">
-                    <mat-icon matSuffix>public</mat-icon>
-                </mat-form-field>
+            @let postCode = orgForm.get('postCode');
+            <app-form-field fieldId="org-post-code" [label]="ui.t('form.postCode')" [error]="errorFor(postCode)">
+                <input id="org-post-code" class="app-input" type="text" formControlName="postCode"
+                    autocomplete="postal-code" [placeholder]="ui.t('form.postCodePlaceholder')"
+                    [attr.aria-invalid]="!!errorFor(postCode)"
+                    [attr.aria-describedby]="describedBy('org-post-code', postCode)" required>
+            </app-form-field>
+        </div>
+    </fieldset>
 
-                <mat-form-field appearance="outline" class="span-4">
-                    <mat-label>{{ ui.t('form.postCode') }}</mat-label>
-                    <input matInput formControlName="postCode" placeholder="e.g. 28001">
-                    <mat-icon matSuffix>local_post_office</mat-icon>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>{{ ui.t('form.taxId') }}</mat-label>
-                    <input matInput formControlName="taxId" placeholder="e.g. ESA12345678">
-                    <mat-icon matSuffix>badge</mat-icon>
-                </mat-form-field>
-            </form>
-            <div class="stepper-actions">
-                <button mat-flat-button color="primary" matStepperNext [disabled]="orgForm.invalid">{{ ui.t('form.next')
-                    }}</button>
-            </div>
-        </mat-step>
-        <mat-step [stepControl]="contactForm" errorMessage="Required">
-            <ng-template matStepLabel>{{ ui.t('form.stepContact') }}</ng-template>
-
-            <form [formGroup]="contactForm" class="grid-layout">
-                <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>{{ ui.t('form.adminEmail') }}</mat-label>
-                    <input matInput formControlName="email" type="email" placeholder="compliance@entity.com">
-                    <mat-icon matSuffix>alternate_email</mat-icon>
-                    @if(contactForm.get('email')?.hasError('email')) {
-                    <mat-error>
-                        {{ ui.t('form.invalidEmail') }}
-                    </mat-error>
-                    }
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="span-12">
-                    <mat-label>{{ ui.t('form.did') }}</mat-label>
-                    <input matInput formControlName="did" placeholder="did:web:domain.com">
-                    <mat-icon matSuffix>fingerprint</mat-icon>
-                    @if (didCreationEnabled) {
-                    <mat-hint>{{ ui.t('form.didHint') }}</mat-hint>
-                    }
-                    @if(contactForm.get('did')?.hasError('pattern')) {
-                    <mat-error>
-                        {{ ui.t('form.invalidDid') }}
-                    </mat-error>
-                    }
-                </mat-form-field>
-            </form>
-
-            <div class="stepper-actions">
-                <button mat-button matStepperPrevious>{{ ui.t('form.back') }}</button>
-                <button mat-flat-button color="primary" matStepperNext [disabled]="contactForm.invalid">{{
-                    ui.t('form.next') }}</button>
-            </div>
-        </mat-step>
-        <mat-step [stepControl]="legalForm" errorMessage="Required">
-            <ng-template matStepLabel>{{ ui.t('form.stepDocument') }}</ng-template>
-            <p>{{ ui.t('form.readDocPrefix') }} <a class="documentPdfLink" [matTooltip]="ui.t('form.readDocTooltip')"
-                    matTooltipShowDelay="1500" [href]="pdfDocumentUrl" target="_blank">{{ ui.t('form.readDocLink')
-                    }}</a> {{ ui.t('form.readDocSuffix') }}
-            </p>
-            <app-upload-file [label]="ui.t('form.signedAgreement')" accept="application/pdf" [maxFileSizeMB]="5"
-                [multiple]="false" (filesChanged)="onFileSelected($event)" />
-            <div class="actions-footer">
-                @if(isProcessing()) {
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                }
-                <div class="stepper-actions">
-                    <button mat-button matStepperPrevious>{{ ui.t('form.back') }}</button>
-                    <button mat-flat-button color="primary" [disabled]="legalForm.invalid || isProcessing()"
-                        (click)="submitRegistration()">
-                        {{ ui.t('form.submit') }}
-                    </button>
-                </div>
-            </div>
-        </mat-step>
-    </mat-stepper>
-
-    } @else {
-    <div class="success-container animate-fade-in">
-        <h2>{{ ui.t('form.submitSuccessTitle') }}</h2>
-        <p class="success-description">
-            {{ ui.t('form.submitSuccessDesc') }}
-        </p>
-        <app-copy-input class="id-input-field" [value]="registrationId" [label]="ui.t('form.copyLabel')"
-            [hint]="ui.t('form.copyHint')"></app-copy-input>
+    <div class="app-actions">
+        <a matButton="outlined" routerLink="/">{{ ui.t('form.back') }}</a>
+        <button matButton="filled" type="submit">
+            {{ ui.t('form.next') }}
+            <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+        </button>
     </div>
+</form>
+}
+
+@case (1) {
+<form [formGroup]="contactForm" class="wizard-form" (ngSubmit)="next()" novalidate>
+    <fieldset class="app-card fieldset">
+        <legend class="app-visually-hidden">{{ ui.t('form.contactGroup') }}</legend>
+        <h2 class="app-card-title" aria-hidden="true">
+            <mat-icon>alternate_email</mat-icon>
+            {{ ui.t('form.contactGroup') }}
+        </h2>
+        @let email = contactForm.get('email');
+        <app-form-field fieldId="contact-email" [label]="ui.t('form.adminEmail')" [hint]="ui.t('form.emailHint')"
+            [error]="errorFor(email)">
+            <input id="contact-email" class="app-input" type="email" formControlName="email" autocomplete="email"
+                [placeholder]="ui.t('form.emailPlaceholder')" [attr.aria-invalid]="!!errorFor(email)"
+                [attr.aria-describedby]="describedBy('contact-email', email, true)" required>
+        </app-form-field>
+    </fieldset>
+
+    <fieldset class="app-card fieldset">
+        <legend class="app-visually-hidden">{{ ui.t('form.didGroup') }}</legend>
+        <h2 class="app-card-title" aria-hidden="true">
+            <mat-icon>fingerprint</mat-icon>
+            {{ ui.t('form.didGroup') }}
+        </h2>
+        @let did = contactForm.get('did');
+        <app-form-field fieldId="contact-did" [label]="ui.t('form.did')"
+            [optionalText]="didCreationEnabled ? ui.t('form.optional') : ''"
+            [hint]="didCreationEnabled ? ui.t('form.didHint') : ui.t('form.didHintRequired')" [error]="errorFor(did)">
+            <input id="contact-did" class="app-input" type="text" formControlName="did" spellcheck="false"
+                autocapitalize="off" placeholder="did:web:organization.eu" [attr.aria-invalid]="!!errorFor(did)"
+                [attr.aria-describedby]="describedBy('contact-did', did, true)" [required]="!didCreationEnabled">
+        </app-form-field>
+    </fieldset>
+
+    <div class="app-actions">
+        <button matButton="outlined" type="button" (click)="back()">{{ ui.t('form.back') }}</button>
+        <button matButton="filled" type="submit">
+            {{ ui.t('form.next') }}
+            <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+        </button>
+    </div>
+</form>
+}
+
+@case (2) {
+<form [formGroup]="legalForm" class="wizard-form" (ngSubmit)="submitRegistration()" novalidate>
+    @if (pdfDocumentUrl) {
+    <section class="app-card contract-card">
+        <span class="contract-thumb" aria-hidden="true"><mat-icon>description</mat-icon></span>
+        <div class="contract-info">
+            <h2 class="contract-title">{{ ui.t('form.contractTitle') }}</h2>
+            <p class="app-note">{{ ui.t('form.contractMeta') }}</p>
+        </div>
+        <div class="contract-actions">
+            <a matButton="outlined" [href]="pdfDocumentUrl" target="_blank" rel="noopener noreferrer">
+                <mat-icon>open_in_new</mat-icon>
+                {{ ui.t('form.viewContract') }}<span class="app-visually-hidden"> {{ ui.t('common.newTab') }}</span>
+            </a>
+            <a matButton="filled" [href]="pdfDocumentUrl" download target="_blank" rel="noopener noreferrer">
+                <mat-icon>download</mat-icon>
+                {{ ui.t('form.downloadPdf') }}
+            </a>
+        </div>
+    </section>
     }
-</div>
+
+    <section class="app-card">
+        <h2 class="app-card-title">{{ ui.t('form.uploadTitle') }}</h2>
+        @let file = legalForm.get('file');
+        <app-upload-file inputId="signed-agreement" accept="application/pdf" [maxFileSizeMB]="maxFileSizeMB"
+            [multiple]="false" [initialFiles]="file?.value ? [file?.value] : []"
+            [invalid]="!!(file?.invalid && file?.touched)"
+            [describedBy]="file?.invalid && file?.touched ? 'signed-agreement-error' : null"
+            (filesChanged)="onFileSelected($event)" />
+        @if (file?.invalid && file?.touched) {
+        <span class="app-field-error" id="signed-agreement-error" role="alert">{{ ui.t('form.fileRequired') }}</span>
+        }
+
+        <div class="acceptances">
+            @let acceptAgreement = legalForm.get('acceptAgreement');
+            <div class="acceptance">
+                <mat-checkbox id="accept-agreement" formControlName="acceptAgreement"
+                    [aria-describedby]="errorFor(acceptAgreement) ? 'accept-agreement-error' : ''">
+                    {{ ui.t('form.accept1') }}
+                </mat-checkbox>
+                @if (errorFor(acceptAgreement)) {
+                <span class="app-field-error" id="accept-agreement-error" role="alert">{{ ui.t('form.acceptRequired')
+                    }}</span>
+                }
+            </div>
+
+            @let acceptRepresentation = legalForm.get('acceptRepresentation');
+            <div class="acceptance">
+                <mat-checkbox id="accept-representation" formControlName="acceptRepresentation"
+                    [aria-describedby]="errorFor(acceptRepresentation) ? 'accept-representation-error' : ''">
+                    {{ ui.t('form.accept2') }}
+                </mat-checkbox>
+                @if (errorFor(acceptRepresentation)) {
+                <span class="app-field-error" id="accept-representation-error" role="alert">{{
+                    ui.t('form.acceptRequired') }}</span>
+                }
+            </div>
+        </div>
+    </section>
+
+    @if (isProcessing()) {
+    <mat-progress-bar mode="indeterminate" [attr.aria-label]="ui.t('form.submitting')" />
+    }
+
+    <div class="app-actions">
+        <button matButton="outlined" type="button" (click)="back()" [disabled]="isProcessing()">
+            {{ ui.t('form.back') }}
+        </button>
+        <button matButton="filled" type="submit" [disabled]="isProcessing()">
+            {{ isProcessing() ? ui.t('form.submitting') : ui.t('form.submit') }}
+            <mat-icon iconPositionEnd>send</mat-icon>
+        </button>
+    </div>
+</form>
+}
+}

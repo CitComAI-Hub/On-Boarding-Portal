@@ -14,7 +14,6 @@
         <nav class="footer-links" aria-label="Footer links">
             <a href="/submit">{{ ui.t('landing.ctaStart') }}</a>
             <a href="/submit#search">{{ ui.t('landing.ctaStatus') }}</a>
-            <a href="/admin">{{ ui.t('toolbar.admin') }}</a>
             <button type="button" class="footer-link-btn" (click)="openExternal(ui.projectWebsiteUrl)">
                 {{ ui.t('landing.ctaProject') }}
             </button>
@@ -35,6 +34,11 @@
     <div class="container footer-bottom">
         <div class="copyright">
             <p>{{ ui.t('footer.rights') }} {{ year }}</p>
+            <span class="copyright-sep" aria-hidden="true">&middot;</span>
+            <button type="button" class="admin-access" (click)="onAdminAccess()">
+                <mat-icon aria-hidden="true">lock</mat-icon>
+                {{ ui.t('footer.admin') }}
+            </button>
         </div>
     </div>
 </footer>

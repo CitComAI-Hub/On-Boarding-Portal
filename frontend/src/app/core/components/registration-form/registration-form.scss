@@ -1,75 +1,93 @@
-.mat-stepper-horizontal {
-  border-radius: 8px;
+:host {
+  display: block;
 }
 
-.stepper-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.actions-footer {
-  margin-top: 20px;
-
-  mat-progress-bar {
-    margin-bottom: 10px;
-  }
-}
-
-.success-container {
+.wizard-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 20px 0;
+  gap: 20px;
+}
 
-  .id-input-field {
-    flex: 1;
-    min-width: 450px;
+.fieldset {
+  border: 1px solid var(--app-border);
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 20px;
+
+  .span-all {
+    grid-column: 1 / -1;
   }
 }
 
-.documentPdfLink {
-  color: var(--mat-sys-primary);
-  text-decoration: none;
-  font-weight: 500;
-  position: relative;
-  transition: color 0.1s ease;
-  display: inline-block;
+.contract-card {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 20px;
+}
 
-  &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    bottom: -2px;
-    left: 0;
-    background-color: var(--mat-sys-primary);
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.1s ease-out;
+.contract-thumb {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 68px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: var(--app-surface-soft);
+  color: var(--app-ink-muted);
+
+  mat-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
   }
+}
 
-  &:hover,
-  &:focus-visible {
-    color: var(--mat-sys-secondary);
-    outline: none;
+.contract-info {
+  flex: 1 1 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
 
-    &::after {
-      transform: scaleX(1);
-      transform-origin: bottom left;
-      background-color: var(--mat-sys-secondary);
-    }
+.contract-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.contract-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.acceptances {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--app-border);
+}
+
+.acceptance {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .app-field-error {
+    padding-left: 40px;
   }
+}
 
-  &:focus-visible {
-    border-radius: 4px;
-    box-shadow: 0 0 0 2px var(--mat-sys-outline-variant);
-  }
-
-  &:active {
-    opacity: 0.8;
-    transform: translateY(1px);
+@media (max-width: 640px) {
+  .field-grid {
+    grid-template-columns: 1fr;
   }
 }

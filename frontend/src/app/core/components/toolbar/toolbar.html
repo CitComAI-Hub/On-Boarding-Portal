@@ -11,22 +11,15 @@
 
         <span class="spacer"></span>
         <div class="toolbar-actions">
-            @if(showAdminLogin || showUserMenu) {
-            @if(showAdminLogin) {
-            <button mat-button class="nav-link admin-button" [attr.aria-label]="ui.t('toolbar.admin')"
-                (click)="onAdminLogin()">
-                <mat-icon>lock_open</mat-icon>
-                <span class="admin-label">{{ ui.t('toolbar.admin') }}</span>
-            </button>
-            }
-            @if(showUserMenu && user && ui.keycloakAdminUrl) {
+            @if(showUserMenu) {
+            @if(user && ui.keycloakAdminUrl) {
             <button mat-button class="nav-link admin-button" [attr.aria-label]="ui.t('toolbar.keycloakAdmin')"
                 (click)="openExternal(ui.keycloakAdminUrl)">
                 <mat-icon>admin_panel_settings</mat-icon>
                 <span class="admin-label">{{ ui.t('toolbar.keycloakAdmin') }}</span>
             </button>
             }
-            @if(showUserMenu && user) {
+            @if(user) {
             <button matButton="text" [matMenuTriggerFor]="menu">
                 <mat-icon>person</mat-icon>
                 {{ user.given_name }} {{ user.family_name }}

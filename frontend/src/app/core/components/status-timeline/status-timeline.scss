@@ -1,0 +1,104 @@
+:host {
+    display: block;
+}
+
+.timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 14px;
+}
+
+.timeline-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: none;
+}
+
+.timeline-marker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--app-border);
+    border-radius: 50%;
+    background: var(--app-surface);
+    color: var(--app-ink-muted);
+
+    mat-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+    }
+}
+
+.timeline-line {
+    flex: 1 1 auto;
+    width: 2px;
+    min-height: 18px;
+    background: var(--app-border);
+}
+
+.timeline-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding-bottom: 20px;
+}
+
+.timeline-title {
+    font-weight: 700;
+    color: var(--app-ink);
+}
+
+.timeline-desc {
+    font-size: 0.9rem;
+    color: var(--app-ink-muted);
+}
+
+.timeline-detail {
+    margin-top: 6px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--app-surface-soft);
+    font-size: 0.9rem;
+    color: var(--app-ink);
+    overflow-wrap: anywhere;
+}
+
+.timeline-item[data-state='done'] {
+    .timeline-marker {
+        border-color: var(--app-status-active-text);
+        background: var(--app-status-active-text);
+        color: var(--app-surface);
+    }
+
+    .timeline-line {
+        background: var(--app-status-active-text);
+    }
+}
+
+.timeline-item[data-state='current'] .timeline-marker {
+    border-color: var(--app-accent);
+    background: var(--app-accent);
+    color: #232528;
+}
+
+.timeline-item[data-state='warning'] .timeline-marker {
+    border-color: var(--app-status-under-review-text);
+    background: var(--app-status-under-review-bg);
+    color: var(--app-status-under-review-text);
+}
+
+.timeline-item[data-state='error'] .timeline-marker {
+    border-color: var(--app-status-rejected-text);
+    background: var(--app-status-rejected-bg);
+    color: var(--app-status-rejected-text);
+}

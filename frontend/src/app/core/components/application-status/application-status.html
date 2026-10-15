@@ -1,0 +1,16 @@
+<section class="app-card status-card" aria-labelledby="status-headline">
+    <div class="status-head">
+        <div class="status-heading">
+            <span class="status-id">
+                {{ ui.replace('track.application', { id: registration().id }) }}
+                @if (registration().name) { &middot; {{ registration().name }} }
+            </span>
+            <h2 class="status-title" id="status-headline">{{ ui.t('track.headline.' + registration().status) }}</h2>
+        </div>
+        <span class="status-tag" [attr.data-status]="registration().status">
+            {{ ui.t('status.' + registration().status) }}
+        </span>
+    </div>
+    <app-status-timeline [items]="timeline()" />
+    <p class="app-note">{{ note() }}</p>
+</section>

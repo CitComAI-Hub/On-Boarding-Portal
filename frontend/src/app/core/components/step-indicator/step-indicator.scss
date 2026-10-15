@@ -1,0 +1,78 @@
+:host {
+    display: block;
+}
+
+.indicator {
+    gap: 14px;
+    padding: 20px;
+}
+
+.indicator-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.indicator-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: var(--app-ink-muted);
+}
+
+.indicator-marker {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--app-border);
+    border-radius: 50%;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+
+    mat-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+    }
+}
+
+.indicator-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.indicator-label {
+    font-weight: 700;
+}
+
+.indicator-desc {
+    font-size: 0.85rem;
+}
+
+.indicator-step--current {
+    color: var(--app-ink);
+
+    .indicator-marker {
+        border-color: var(--app-accent);
+        background: var(--app-accent);
+        color: #232528;
+    }
+}
+
+.indicator-step--done {
+    color: var(--app-ink);
+
+    .indicator-marker {
+        border-color: var(--app-ink);
+        background: var(--app-ink);
+        color: var(--app-surface);
+    }
+}
