@@ -20,10 +20,13 @@ export class ApplicationStatus {
   readonly registration = input.required<Registration>();
 
   readonly note = computed(() => {
-    const { status, didGenerated } = this.registration();
+    const { status, didGenerated, email } = this.registration();
     // Without a portal-created realm no user management links are sent.
     if (status === RegistrationStatus.ACTIVE && !didGenerated) {
       return this.ui.t('track.note.activeOwnDid');
+    }
+    if (status === RegistrationStatus.ACTIVE) {
+      return this.ui.replace('track.note.active', { email });
     }
     const specific = `track.note.${status}`;
     const text = this.ui.t(specific);
@@ -87,11 +90,19 @@ export class ApplicationStatus {
           description: this.ui.t(isActive ? 'timeline.trustDone' : 'timeline.trustPending'),
           state: isActive ? 'done' : 'pending',
         },
-      {
-        title: this.ui.t('timeline.connection'),
-        description: this.ui.t('timeline.connectionDesc'),
-        state: isActive ? 'current' : 'pending',
-      },
+      // An organization without its own DID has no connector to deploy: it uses the
+      // marketplace through the Keycloak realm created for it.
+      registration.didGenerated
+        ? {
+          title: this.ui.t('timeline.marketplace'),
+          description: this.ui.t('timeline.marketplaceDesc'),
+          state: isActive ? 'current' : 'pending',
+        }
+        : {
+          title: this.ui.t('timeline.connection'),
+          description: this.ui.t('timeline.connectionDesc'),
+          state: isActive ? 'current' : 'pending',
+        },
     ];
   });
 }

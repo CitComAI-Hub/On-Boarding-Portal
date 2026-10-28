@@ -208,7 +208,8 @@ export class UiPreferencesService {
             'track.note.action_required':
                 'Click “Review” in the application details to correct the information or attach the agreement again.',
             'track.note.rejected': 'If you think this is a mistake, you can start a new application.',
-            'track.note.active': 'Check your inbox: you will find the links to manage the users of your organization.',
+            'track.note.active':
+                'We have sent an email to {{email}}, the address you gave in your application. It contains a link to set the password of the “admin” user of your organization’s space. With that password you can sign in to Keycloak to manage the users of your organization and create the credentials needed to access the marketplace.',
             'track.note.activeOwnDid':
                 'Your DID is now a trusted issuer of the data space: your organization issues its credentials from its own connector.',
 
@@ -237,6 +238,8 @@ export class UiPreferencesService {
             'timeline.trustDone': 'Your DID is registered as a trusted issuer',
             'timeline.connection': 'Connecting to the data space',
             'timeline.connectionDesc': 'Deploy your connector and publish your first assets',
+            'timeline.marketplace': 'Access to the marketplace',
+            'timeline.marketplaceDesc': 'Set your password from the email, then in Keycloak manage your users and create your marketplace credentials',
 
             'common.newTab': '(opens in a new tab)',
 
@@ -467,7 +470,8 @@ export class UiPreferencesService {
             'track.note.action_required':
                 'Pulsa «Revisar» en los datos de la solicitud para corregir la información o adjuntar de nuevo el contrato.',
             'track.note.rejected': 'Si crees que se trata de un error, puedes iniciar una nueva solicitud.',
-            'track.note.active': 'Revisa tu correo: encontrarás los enlaces para gestionar los usuarios de tu organización.',
+            'track.note.active':
+                'Te hemos enviado un correo a {{email}}, la dirección que indicaste en la solicitud. Contiene un enlace para fijar la contraseña del usuario «admin» del espacio de tu organización. Con esa contraseña podrás acceder a Keycloak para gestionar los usuarios de tu organización y crear las credenciales para acceder al marketplace.',
             'track.note.activeOwnDid':
                 'Tu DID ya es emisor de confianza del espacio de datos: tu organización emite sus credenciales desde su propio conector.',
 
@@ -496,6 +500,8 @@ export class UiPreferencesService {
             'timeline.trustDone': 'Tu DID está registrado como emisor de confianza',
             'timeline.connection': 'Conexión al espacio de datos',
             'timeline.connectionDesc': 'Despliega tu conector y publica tus primeros activos',
+            'timeline.marketplace': 'Acceso al marketplace',
+            'timeline.marketplaceDesc': 'Fija tu contraseña desde el correo y, en Keycloak, gestiona tus usuarios y crea tus credenciales del marketplace',
 
             'common.newTab': '(se abre en una pestaña nueva)',
 

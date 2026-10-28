@@ -2,6 +2,7 @@ import { Router } from "express";
 import { registrationRepository, RegistrationUpdate } from "../repository/registration.repository";
 import { logger } from "../service/logger";
 import { isDuplicatedKeyError } from "../type/db-errors";
+import { AppError } from "../type/app-error";
 import emailService from "../service/email.service";
 import { adminNotificationService } from "../service/admin-notification.service";
 import { RegistrationStatus } from "../entity/registration.entity";
@@ -27,7 +28,7 @@ router.post('/registrations/submit', uploadFiles('files', { maxCount: 5, allowed
             if (!keycloakService.config.didCreationEnabled) {
                 return res.status(400).json({ error: 'DID is required' })
             }
-            const did = keycloakService.createDidRealm();
+            const did = keycloakService.createDidRealm(data.name);
             data.did = did;
             data.didGenerated = true;
         }
@@ -55,6 +56,9 @@ router.post('/registrations/submit', uploadFiles('files', { maxCount: 5, allowed
             logger.warn('Unable to send admin notification email', error);
         })
     } catch (error) {
+        if (error instanceof AppError) {
+            return res.status(error.status).json({ error: error.message });
+        }
         logger.error('Submission Error:', error);
         if (filesPath) {
             await storageService.removeFolder(filesPath);
