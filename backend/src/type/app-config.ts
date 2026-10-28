@@ -69,6 +69,9 @@ export interface KeycloakConfig {
     auth: Credentials;
     keys: { curveType: string };
     realmNameLength: number;
+    realmSuffixLength: number;
+    realmSlugMaxLength: number;
+    reservedRealmNames: string[];
     additionalClientScopes: ClientScope[];
     adminPasswordLength: number;
     adminEmailLifespan: string;

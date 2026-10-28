@@ -52,6 +52,21 @@ app:
     grantType: password
     clientId: "admin-cli"
     realmNameLength: 36
+    # Realm name = <slug of the organization name>-<random suffix>
+    realmSuffixLength: 6
+    realmSlugMaxLength: 40
+    # Organization names whose slug matches one of these are rejected
+    reservedRealmNames:
+      - master
+      - onboarding
+      - admin
+      - administrator
+      - root
+      - keycloak
+      - realm
+      - realms
+      - account
+      - www
     adminPasswordLength: 30
     adminEmailLifespan: 72h
     adminUserConfig:
