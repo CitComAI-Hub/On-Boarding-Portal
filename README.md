@@ -182,7 +182,10 @@ app:
     didCreationEnabled: false
 
     # Generated realm settings
-    realmNameLength: 36              # Length of randomly generated realm names
+    realmNameLength: 36              # Length of the random realm name used when the organization name has no usable characters
+    realmSuffixLength: 6             # Realm name = <slug of the organization name>-<random suffix>
+    realmSlugMaxLength: 40           # Max length of the slug part
+    reservedRealmNames: [master, onboarding, admin]   # Organization names (as slug) that are rejected
     adminPasswordLength: 30          # Length of generated admin passwords
     adminEmailLifespan: 72h          # Expiry of the admin welcome email action link
 
@@ -392,7 +395,7 @@ Several fields inside `app.keycloak.defaultRealmConfig` and `app.keycloak.additi
 | Placeholder | Resolved value |
 |---|---|
 | `${DID}` | Full `did:web` identifier of the newly created realm (e.g. `did:web:example.com:my-realm`). Derived from `didGenerator.didWebHost` and the generated realm name. |
-| `${REALM}` | Randomly generated realm name (alphanumeric string, length controlled by `keycloak.realmNameLength`). Used as the Keycloak realm identifier. |
+| `${REALM}` | Generated realm name: slug of the organization name plus a random suffix (see `keycloak.realmSuffixLength`). Used as the Keycloak realm identifier. |
 | `${ID}` | Same value as `${REALM}`. Used wherever Keycloak requires the internal realm ID. |
 
 These placeholders allow the realm template to reference its own DID and name without hardcoding them, so every provisioned realm gets its own correctly scoped client and credential configuration.

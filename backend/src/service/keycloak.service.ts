@@ -1,5 +1,6 @@
 import KeycloakAdminClient from "@keycloak/keycloak-admin-client";
 import ms, { StringValue } from 'ms';
+import { AppError } from "../type/app-error";
 import { ClientScope, KeycloakConfig } from "../type/app-config";
 import { logger } from "./logger";
 import { configService } from "./config.service";
@@ -13,6 +14,7 @@ import UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRep
 import { RequiredActionAlias } from "@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation";
 
 const REALM_CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+const SUFFIX_CHARSET = "abcdefghijklmnopqrstuvwxyz0123456789";
 
 interface AdminUser {
     username: string;
@@ -38,10 +40,34 @@ class KeycloakService {
         this.templateService = new TemplateService(DOLLAR_REGEX);
     }
 
-    createDidRealm(): string {
-        const realm = this.generateRandomString(this.config.realmNameLength, REALM_CHARSET);
-        return didService.generateDid(realm);
+    /**
+     * Realm (and DID path) for a new organization: `<slug of the name>-<random suffix>`.
+     * The name is lowercased, stripped of accents and reduced to `[a-z0-9-]`. The suffix
+     * keeps the realm unique when two organizations share a name. A name whose slug is in
+     * `reservedRealmNames` is rejected (400). Falls back to a fully random name when the
+     * organization name has no usable characters.
+     */
+    createDidRealm(organizationName?: string): string {
+        const slug = this.slugify(organizationName ?? '');
+        if (!slug) {
+            return didService.generateDid(this.generateRandomString(this.config.realmNameLength, REALM_CHARSET));
+        }
+        if (this.config.reservedRealmNames.map(n => n.toLowerCase()).includes(slug)) {
+            throw new AppError(`The organization name '${organizationName}' is reserved. Please use another one.`, 400);
+        }
+        const suffix = this.generateRandomString(this.config.realmSuffixLength, SUFFIX_CHARSET);
+        return didService.generateDid(`${slug}-${suffix}`);
+    }
 
+    private slugify(name: string): string {
+        return name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .slice(0, this.config.realmSlugMaxLength)
+            .replace(/-+$/g, '');
     }
 
     async createRealm({ did, email }: Registration): Promise<string> {
