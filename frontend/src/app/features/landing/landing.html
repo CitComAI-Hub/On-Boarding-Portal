@@ -25,6 +25,10 @@
                 <mat-icon>language</mat-icon>
                 {{ ui.t('landing.ctaProject') }}
               </button>
+              <button mat-stroked-button type="button" (click)="router.navigate(['/guide/consumer'])">
+                <mat-icon>menu_book</mat-icon>
+                {{ ui.t('guide.title') }}
+              </button>
               <button mat-stroked-button type="button" (click)="openExternal(ui.marketplaceUrl)">
                 <mat-icon>storefront</mat-icon>
                 {{ ui.t('landing.ctaMarketplace') }}

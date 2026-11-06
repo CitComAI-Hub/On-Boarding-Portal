@@ -187,7 +187,6 @@ app:
     realmSlugMaxLength: 40           # Max length of the slug part
     reservedRealmNames: [master, onboarding, admin]   # Organization names (as slug) that are rejected
     adminPasswordLength: 30          # Length of generated admin passwords
-    adminEmailLifespan: 72h          # Expiry of the admin welcome email action link
 
     # Admin user created inside each provisioned realm
     adminUserConfig:

@@ -1,15 +1,20 @@
 import { Registration } from "../entity/registration.entity";
 import { TrusterIssuer } from "../type/truster-issuer";
-import { keycloakService } from "./keycloak.service";
+import { CreatedRealm, keycloakService } from "./keycloak.service";
 import { logger } from "./logger";
 import { tirService } from "./tir.service";
 import { tilService } from "./til.service";
 
 class RegistrationService {
 
-    async register(registration: Registration) {
+    /**
+     * Registers the DID in the TIR/TIL. If the DID was generated, it also creates the realm
+     * and returns the credentials of its admin user, to be sent to the organization.
+     */
+    async register(registration: Registration): Promise<CreatedRealm['admin']> {
+        let admin: CreatedRealm['admin'];
         if (registration.didGenerated) {
-            await keycloakService.createRealm(registration);
+            ({ admin } = await keycloakService.createRealm(registration));
         }
         const tirIssuer: TrusterIssuer = {
             did: registration.did,
@@ -25,6 +30,7 @@ class RegistrationService {
             }
             throw error;
         }
+        return admin;
     }
     async unregister(did: string, removeRealm: boolean = false) {
         if (removeRealm) {

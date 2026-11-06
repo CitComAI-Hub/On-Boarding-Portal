@@ -9,6 +9,7 @@ import { logger } from "../service/logger";
 import { registrationService } from "../service/registration.service";
 import { MailContext } from "../type/main-context";
 import { keycloakService } from "../service/keycloak.service";
+import { configService } from "../service/config.service";
 
 const router = Router()
 
@@ -125,8 +126,9 @@ router.put('/admin/registrations/:id', authFilter, async (req: Request, res: Res
         const registration = (await registrationRepository.updateStatus(id as string, status, reason, queryRunner))!;
 
         // Update realm and TIR
+        let admin: Awaited<ReturnType<typeof registrationService.register>>;
         if (prevRegistration.status !== RegistrationStatus.ACTIVE && status === RegistrationStatus.ACTIVE) {
-            await registrationService.register(registration);
+            admin = await registrationService.register(registration);
         } else if (prevRegistration.status === RegistrationStatus.ACTIVE && status !== RegistrationStatus.ACTIVE) {
             await registrationService.unregister(registration.did, registration.didGenerated);
         }
@@ -145,7 +147,10 @@ router.put('/admin/registrations/:id', authFilter, async (req: Request, res: Res
                 previousState: prevRegistration.status,
                 serverOrigin: (req as any).serverOrigin,
                 accountUrl: keycloakService.getAccountUrl(registration.did),
-                adminUrl: keycloakService.getAdminUrl(registration.did)
+                adminUrl: keycloakService.getAdminUrl(registration.did),
+                adminUsername: admin?.username,
+                temporaryPassword: admin?.temporaryPassword,
+                guideUrl: configService.get().email.guideUrl
             }
             await emailService.sendUpdateEmail(registration.email, mailContext)
         } catch (error) {

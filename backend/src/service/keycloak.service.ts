@@ -1,5 +1,4 @@
 import KeycloakAdminClient from "@keycloak/keycloak-admin-client";
-import ms, { StringValue } from 'ms';
 import { AppError } from "../type/app-error";
 import { ClientScope, KeycloakConfig } from "../type/app-config";
 import { logger } from "./logger";
@@ -11,15 +10,24 @@ import { didService } from "./did.service";
 import { DOLLAR_REGEX, TemplateService } from "./template.service";
 import { Registration } from "../entity/registration.entity";
 import UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
-import { RequiredActionAlias } from "@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation";
 
 const REALM_CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
 const SUFFIX_CHARSET = "abcdefghijklmnopqrstuvwxyz0123456789";
+const PASSWORD_CHARSET = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789-_";
 
 interface AdminUser {
     username: string;
 
+    /** Temporary password: Keycloak forces the user to change it at first login. */
+    temporaryPassword: string;
+
     realm: string;
+}
+
+export interface CreatedRealm {
+    did: string;
+    /** Credentials of the realm admin user, if it was created. */
+    admin?: { username: string; temporaryPassword: string };
 }
 
 interface RealmContext {
@@ -70,7 +78,7 @@ class KeycloakService {
             .replace(/-+$/g, '');
     }
 
-    async createRealm({ did, email }: Registration): Promise<string> {
+    async createRealm({ did, email }: Registration): Promise<CreatedRealm> {
         const realm = didService.getRealmFromDid(did);
         logger.info(`Create realm '${realm}'`)
 
@@ -91,16 +99,18 @@ class KeycloakService {
         if (this.config.additionalClientScopes?.length) {
             await this._processClientScopes(this.config.additionalClientScopes, context);
         }
+        let admin: CreatedRealm['admin'];
         if (this.config.adminUserConfig.enabled) {
             try {
-                await this._createAdminUser(realmName, email);
+                const { username, temporaryPassword } = await this._createAdminUser(realmName, email);
+                admin = { username, temporaryPassword };
             } catch (error) {
                 logger.error('Unable to create admin user', error);
             }
         } else {
             logger.info('Do not create admin user because it is disabled');
         }
-        return did;
+        return { did, admin };
     }
 
     async removeRealm(did: string) {
@@ -251,23 +261,16 @@ class KeycloakService {
                 ? { verifiableCredentials: credentialScopes.map(credentialScopeName => ({ credentialScopeName })) }
                 : {}),
         }
+        // The password is delivered in the 'active' email. It is temporary, so Keycloak
+        // asks the user to change it (and to verify the email) at first login.
+        const temporaryPassword = this.generateRandomString(this.config.adminPasswordLength, PASSWORD_CHARSET);
+        user.credentials = [{ type: 'password', value: temporaryPassword, temporary: true }];
         await this._authClient();
         logger.info(`Creating admin user '${user.username}' and email '${user.email}' in realm '${realm}'`)
-        const realmAdmin = await this.adminClient.users.create({ ...user, realm })
-        if (user.requiredActions?.includes(RequiredActionAlias.VERIFY_EMAIL)) {
-            try {
-                await this.adminClient.users.executeActionsEmail({
-                    id: realmAdmin.id,
-                    realm,
-                    actions: user.requiredActions,
-                    lifespan: ms(this.config.adminEmailLifespan as StringValue) / 1000
-                })
-            } catch (error) {
-                logger.error('Unable to execute user actions', error);
-            }
-        }
+        await this.adminClient.users.create({ ...user, realm })
         return {
-            username: user.id!,
+            username: user.username!,
+            temporaryPassword,
             realm
         }
     }
