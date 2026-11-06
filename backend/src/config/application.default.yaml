@@ -68,7 +68,6 @@ app:
       - account
       - www
     adminPasswordLength: 30
-    adminEmailLifespan: 72h
     adminUserConfig:
       enabled: true
       username: admin
@@ -319,6 +318,8 @@ email:
   enabled: false
   type: "nodemailer"
   from: "onboarding@seamware.com"
+  # Link of the "Step-by-step guide" button in the activation email.
+  guideUrl: "https://citcomai-hub.github.io/guides/keycloak_users/"
   update:
     subject: "OnBoarding Portal - Registration updated"
     html: "file://./templates/update.html"

@@ -29,7 +29,7 @@ import { SiteFooter } from '../../core/components/site-footer/site-footer';
 export class Landing {
 
   constructor(
-    private readonly router: Router,
+    readonly router: Router,
     readonly ui: UiPreferencesService
   ) { }
 

@@ -6,4 +6,8 @@ export interface MailContext {
     serverOrigin: string;
     accountUrl?: string;
     adminUrl?: string;
+    /** Realm admin credentials, only set when the realm has just been created. */
+    adminUsername?: string;
+    temporaryPassword?: string;
+    guideUrl?: string;
 }

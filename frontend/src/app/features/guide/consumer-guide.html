@@ -1,0 +1,91 @@
+<app-toolbar />
+<main class="guide">
+    <header class="guide-head">
+        <p class="app-eyebrow">{{ ui.t('guide.eyebrow') }}</p>
+        <h1 class="guide-title">{{ ui.t('guide.title') }}</h1>
+        <p class="guide-lead">{{ ui.t('guide.lead') }}</p>
+        <div class="guide-cta">
+            <a matButton="filled" routerLink="/submit">
+                <mat-icon>add_business</mat-icon>
+                {{ ui.t('guide.start') }}
+            </a>
+        </div>
+    </header>
+
+    <section class="app-card step">
+        <h2 class="step-title"><span class="step-num">1</span>{{ ui.t('guide.s1.title') }}</h2>
+        <p>{{ ui.t('guide.s1.body') }}</p>
+        <ul>
+            <li>{{ ui.t('guide.s1.b1') }}</li>
+            <li>{{ ui.t('guide.s1.b2') }}</li>
+            <li>{{ ui.t('guide.s1.b3') }}</li>
+        </ul>
+    </section>
+
+    <section class="app-card step">
+        <h2 class="step-title"><span class="step-num">2</span>{{ ui.t('guide.s2.title') }}</h2>
+        <p>{{ ui.t('guide.s2.body') }}</p>
+        <figure>
+            <img src="/guides/consumer-01-form-did.png" [alt]="ui.t('guide.s2.alt')" loading="lazy">
+        </figure>
+    </section>
+
+    <section class="app-card step">
+        <h2 class="step-title"><span class="step-num">3</span>{{ ui.t('guide.s3.title') }}</h2>
+        <p>{{ ui.t('guide.s3.body') }}</p>
+        <ul>
+            <li>{{ ui.t('guide.s3.b1') }}</li>
+            <li>{{ ui.t('guide.s3.b2') }}</li>
+            <li>{{ ui.t('guide.s3.b3') }}</li>
+        </ul>
+    </section>
+
+    <section class="app-card step">
+        <h2 class="step-title"><span class="step-num">4</span>{{ ui.t('guide.s4.title') }}</h2>
+        <h3>{{ ui.t('guide.s4.mail1') }}</h3>
+        <p>{{ ui.t('guide.s4.mail1Body') }}</p>
+        <h3>{{ ui.t('guide.s4.mail2') }}</h3>
+        <p>{{ ui.t('guide.s4.mail2Body') }}</p>
+        <ul>
+            <li>{{ ui.t('guide.s4.mail2b1') }}</li>
+            <li>{{ ui.t('guide.s4.mail2b2') }}</li>
+            <li>{{ ui.t('guide.s4.mail2b3') }}</li>
+            <li>{{ ui.t('guide.s4.mail2b4') }}</li>
+        </ul>
+    </section>
+
+    <section class="app-card step">
+        <h2 class="step-title"><span class="step-num">5</span>{{ ui.t('guide.s5.title') }}</h2>
+        <p>{{ ui.t('guide.s5.body') }}</p>
+    </section>
+
+    <section class="app-card step">
+        <h2 class="step-title"><span class="step-num">6</span>{{ ui.t('guide.s6.title') }}</h2>
+        <p>{{ ui.t('guide.s6.body') }}</p>
+        <div class="thumbs">
+            <figure>
+                <img src="/guides/kc-02-create-user.png" [alt]="ui.t('guide.cap.user')" loading="lazy">
+                <figcaption>{{ ui.t('guide.cap.user') }}</figcaption>
+            </figure>
+            <figure>
+                <img src="/guides/kc-06-impersonate.png" [alt]="ui.t('guide.cap.impersonate')" loading="lazy">
+                <figcaption>{{ ui.t('guide.cap.impersonate') }}</figcaption>
+            </figure>
+            <figure>
+                <img src="/guides/kc-08-claim-qr.png" [alt]="ui.t('guide.cap.claim')" loading="lazy">
+                <figcaption>{{ ui.t('guide.cap.claim') }}</figcaption>
+            </figure>
+        </div>
+        <p>
+            <a matButton="outlined" [href]="keycloakGuideUrl" target="_blank" rel="noopener noreferrer">
+                <mat-icon>open_in_new</mat-icon>
+                {{ ui.t('guide.s6.link') }}<span class="app-visually-hidden"> {{ ui.t('common.newTab') }}</span>
+            </a>
+        </p>
+        <p class="app-note">
+            {{ ui.t('guide.s6.wallet') }}
+            <a [href]="walletGuideUrl" target="_blank" rel="noopener noreferrer">{{ ui.t('guide.s6.walletLink') }}</a>.
+        </p>
+    </section>
+</main>
+<app-site-footer />

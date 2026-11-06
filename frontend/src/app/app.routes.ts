@@ -5,10 +5,12 @@ import { Submit } from './features/submit/submit';
 import { AuthGuard } from './core/guards/auth-guard';
 import { Dashboard } from './features/admin/dashboard/dashboard';
 import { Review } from './features/admin/review/review';
+import { ConsumerGuide } from './features/guide/consumer-guide';
 
 export const routes: Routes = [
     { path: '', component: Landing, pathMatch: 'full' },
     { path: 'submit', component: Submit, pathMatch: 'full' },
+    { path: 'guide/consumer', component: ConsumerGuide, pathMatch: 'full' },
     { path: 'callback', resolve: { callback: CallbackResolver }, component: Landing },
     {
         path: 'admin', canActivate: [AuthGuard], children: [

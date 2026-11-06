@@ -74,7 +74,6 @@ export interface KeycloakConfig {
     reservedRealmNames: string[];
     additionalClientScopes: ClientScope[];
     adminPasswordLength: number;
-    adminEmailLifespan: string;
     adminUserConfig: UserRepresentation;
 }
 
@@ -99,6 +98,7 @@ export interface AdminNotificationConfig extends MailTemplate {
 export interface BaseEmailConfig {
     enabled: boolean;
     from: string;
+    guideUrl?: string;
     update: MailTemplate
     submit: MailTemplate
     active: MailTemplate

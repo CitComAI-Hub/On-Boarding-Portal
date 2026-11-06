@@ -97,6 +97,10 @@
                 autocapitalize="off" placeholder="did:web:organization.eu" [attr.aria-invalid]="!!errorFor(did)"
                 [attr.aria-describedby]="describedBy('contact-did', did, true)" [required]="!didCreationEnabled">
         </app-form-field>
+        @if (didCreationEnabled) {
+        <a class="did-how" routerLink="/guide/consumer" target="_blank">{{ ui.t('form.didHow') }}<span
+                class="app-visually-hidden"> {{ ui.t('common.newTab') }}</span></a>
+        }
     </fieldset>
 
     <div class="app-actions">
