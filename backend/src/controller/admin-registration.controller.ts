@@ -10,6 +10,9 @@ import { registrationService } from "../service/registration.service";
 import { MailContext } from "../type/main-context";
 import { keycloakService } from "../service/keycloak.service";
 import { configService } from "../service/config.service";
+import { registrationEventRepository, actorOf } from "../repository/registration-event.repository";
+import { DELETED } from "../entity/registration-event.entity";
+import { AuthRequest } from "../type/auth-request";
 
 const router = Router()
 
@@ -93,8 +96,10 @@ router.delete('/admin/registrations/:id', authFilter, async (req: Request, res: 
         if (registration.status === RegistrationStatus.ACTIVE) {
             await registrationService.unregister(registration.did, registration.didGenerated);
         }
+        await registrationEventRepository.record(registration, registration.status, DELETED,
+            null, (req as AuthRequest).user, queryRunner);
         await registrationRepository.delete(id, queryRunner);
-        logger.info(`Registration ${id} deleted by admin.`);
+        logger.info(`Registration ${id} deleted by admin ${actorOf((req as AuthRequest).user)}.`);
 
         await queryRunner.commitTransaction();
 
@@ -124,6 +129,8 @@ router.put('/admin/registrations/:id', authFilter, async (req: Request, res: Res
             });
         }
         const registration = (await registrationRepository.updateStatus(id as string, status, reason, queryRunner))!;
+        await registrationEventRepository.record(registration, prevRegistration.status, status,
+            reason, (req as AuthRequest).user, queryRunner);
 
         // Update realm and TIR
         let admin: Awaited<ReturnType<typeof registrationService.register>>;
@@ -134,7 +141,7 @@ router.put('/admin/registrations/:id', authFilter, async (req: Request, res: Res
         }
 
         await queryRunner.commitTransaction();
-        logger.info(`Registration ${id} status updated to ${status} by admin.`);
+        logger.info(`Registration ${id} status updated to ${status} by admin ${actorOf((req as AuthRequest).user)}.`);
         res.status(200).json(registration);
         // TODO should send email first?
         const data = {
@@ -164,6 +171,18 @@ router.put('/admin/registrations/:id', authFilter, async (req: Request, res: Res
         await queryRunner.release();
     }
 })
+// History of admin actions on a registration (status changes, deletion). Kept after the
+// registration is deleted, so it also answers for DIDs no longer in the list.
+router.get('/admin/registrations/:id/events', authFilter, async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        res.status(200).json(await registrationEventRepository.history(id as string));
+    } catch (error) {
+        logger.error('Error fetching registration history:', error);
+        res.status(500).json({ message: 'Error retrieving the registration history' });
+    }
+});
+
 router.get('/admin/registrations/:id/files', authFilter, async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
